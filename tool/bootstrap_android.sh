@@ -3,6 +3,10 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 # Generate only standard Flutter/Gradle infrastructure with the pinned SDK.
 # All authored native code, manifests, backup rules and app build settings win.
+if [ -f android/gradlew ] && [ -f android/settings.gradle.kts ]; then
+  chmod +x android/gradlew
+  exit 0
+fi
 seed=work/android-seed
 if [ ! -f "$seed/android/gradlew" ]; then
   flutter create --no-pub --empty --platforms=android --org dk.ask --project-name nelko_p21_ask_mobile "$seed"

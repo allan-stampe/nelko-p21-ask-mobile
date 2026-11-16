@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" android:usesPermissionFlags="neverForLocation" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <!-- Deliberately no INTERNET, network-state, advertising or telemetry permissions. -->
-    <application android:label="NELKO P21 – ASK Mobile" android:name="${applicationName}"
+    <application android:icon="@drawable/ic_launcher" android:label="NELKO P21 – ASK Mobile" android:name="${applicationName}"
         android:allowBackup="false" android:fullBackupContent="@xml/backup_rules"
         android:dataExtractionRules="@xml/data_extraction_rules" android:usesCleartextTraffic="false">
         <activity android:name=".MainActivity" android:exported="true" android:launchMode="singleTop"
