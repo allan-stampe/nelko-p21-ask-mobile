@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:nelko_p21_ask_mobile/platform/printer_platform.dart';
 
