@@ -4,7 +4,7 @@ class Labels {
   String t(String key) => (language == 'da' ? _da[key] : null) ?? _en[key] ?? key;
   static const _en = <String, String>{
     'about': 'About / licenses', 'credits': 'Windows reference: Tyler C / ASK Edition (MIT). Protocol research: Merlin Schumacher and Julien Vincent; see repository notices. No mobile hardware confirmation.',
-    'title': 'NELKO P21 – ASK Mobile', 'printers': 'Printers', 'diagnostics': 'Diagnostics',
+    'title': 'NELKO P21 – ASK Mobile Edition', 'printers': 'Printers', 'diagnostics': 'Diagnostics',
     'experimental': 'EXPERIMENTAL v0.0.1 — Android Bluetooth and physical printing are NOT hardware-confirmed.',
     'slogan': 'Your printer. Your labels. Your data.\nNo cloud. No account. Just print.',
     'idle': 'Ready', 'permission': 'Bluetooth permission required', 'bluetoothOff': 'Bluetooth is off',
