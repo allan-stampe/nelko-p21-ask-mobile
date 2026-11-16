@@ -9,25 +9,18 @@ The owner confirmed Windows v1.0.1 on Windows 11 through COM4, 115200 baud, 8N1,
 Send raw bytes `1B 21 6F` (historically named Cancel Pause), wait **500 ms**, then send the following parts in order:
 
 ```text
-SIZE 14.0 mm,40.0 mm
-
-GAP 5.0 mm,0 mm
-
-DIRECTION 0,0
-
-DENSITY 15
-
-CLS
-
-BITMAP 0,0,12,284,1,<3408 binary bytes>
-
-PRINT 1
-
+SIZE 14.0 mm,40.0 mm\r\n
+GAP 5.0 mm,0 mm\r\n
+DIRECTION 0,0\r\n
+DENSITY 15\r\n
+CLS\r\n
+BITMAP 0,0,12,284,1,<3408 binary bytes>\r\n
+PRINT 1\r\n
 ```
 
 There is no line ending between the BITMAP header and its binary payload. Width is 12 bytes = 96 dots, height 284 rows, bitmap mode 1. The reference image starts with FF bytes and clears bits for a frame and three bars. After PRINT wait **3 seconds**. Do not change mode, row count, polarity or spacing while establishing the baseline. Transmissions are serialized; failures are not replayed. API write success is not printer acknowledgement.
 
-The Go-generated golden fixture `test/fixtures/windows_reference.bin` tests the entire Dart print stream including Cancel Pause. SHA256: `6fc19a63c63198e7f7777269c402a7b754a64dec2c950f6294faecccb61a3d3e`. Source: Windows tag v1.0.1, commit `cf5a10edca679193467b37f80e9b14871e883584`, `internal/tspl/diagnostic.go` and `tspl.go` (MIT). Timing is tested separately.
+The Go-generated golden fixture `test/fixtures/windows_reference.bin` tests the entire Dart print stream excluding Cancel Pause (tested separately). SHA256: `6fc19a63c63198e7f7777269c402a7b754a64dec2c950f6294faecccb61a3d3e`. Source: Windows tag v1.0.1, commit `cf5a10edca679193467b37f80e9b14871e883584`, `internal/tspl/diagnostic.go` and `tspl.go` (MIT). Timing is tested separately.
 
 ## Transports and UUIDs
 
@@ -37,8 +30,7 @@ Upstream reports BLE service `0000ff00-0000-1000-8000-00805f9b34fb`, FF02 write-
 
 ## Battery and receive data
 
-Send `BATTERY?
-`, collect raw incoming chunks for three seconds, retaining ASCII and HEX regardless of interpretation. The experimental parser expects `BATTERY ` + one BCD percentage byte + one charging byte (0 or 1) + CRLF. Thus 0x42 means 42%, not decimal 66; 0x99 means 99%. Invalid BCD, missing framing or unknown replies produce an unknown reading, not a fabricated percentage. Fragmented and coalesced frames are tested. This profile comes from upstream observations and needs hardware confirmation.
+Send `BATTERY?\r\n`, collect raw incoming chunks for three seconds, retaining ASCII and HEX regardless of interpretation. The experimental parser expects `BATTERY ` + one BCD percentage byte + one charging byte (0 or 1) + CRLF. Thus 0x42 means 42%, not decimal 66; 0x99 means 99%. Invalid BCD, missing framing or unknown replies produce an unknown reading, not a fabricated percentage. Fragmented and coalesced frames are tested. This profile comes from upstream observations and needs hardware confirmation.
 
 Upstream also reports `1B 21 6F` can return a raw 16-byte label/NFC record without CRLF. The application logs it without treating it as an acknowledgement or inventing a line protocol. All receive data is asynchronous; queries must not overwrite the raw diagnostics.
 
