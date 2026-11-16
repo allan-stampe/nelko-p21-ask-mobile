@@ -1,0 +1,6 @@
+analyzer:
+  exclude:
+    - work/**
+linter:
+  rules:
+    avoid_print: true
