@@ -1,0 +1,81 @@
+name: Released APK installation audit
+on:
+  push:
+    paths:
+      - '.github/workflows/apk-install-audit.yml'
+      - 'tool/audit_released_apk.py'
+      - 'tool/emulator_install_smoke.sh'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: apk-audit-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  APK_NAME: NELKO-P21-ASK-Mobile-v0.0.1-experimental.apk
+  APK_SHA256: 7b3957e467b8b7c2299dcc0b00e35b44c68996cfc7a7ef668ddb2d425199f24d
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools build-tools;36.0.0'
+      - name: Download original immutable release APK
+        run: |
+          mkdir -p work/audit
+          curl --fail --location --retry 3 --output "work/audit/$APK_NAME" "https://github.com/allan-stampe/nelko-p21-ask-mobile/releases/download/v0.0.1/$APK_NAME"
+          echo "$APK_SHA256  work/audit/$APK_NAME" | sha256sum --check
+      - name: Inspect signature, manifest, ABI, ELF and package integrity
+        run: |
+          python3 tool/audit_released_apk.py "work/audit/$APK_NAME" --sha256 "$APK_SHA256" --build-tools "$ANDROID_HOME/build-tools/36.0.0" --output work/audit/report
+          "$ANDROID_HOME/cmdline-tools/latest/bin/apkanalyzer" manifest print "work/audit/$APK_NAME" > work/audit/report/AndroidManifest.xml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: released-apk-static-audit
+          path: work/audit/report
+  install:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        api: [31, 36]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Enable emulator acceleration
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Download original immutable release APK
+        run: |
+          mkdir -p work/audit
+          curl --fail --location --retry 3 --output "work/audit/$APK_NAME" "https://github.com/allan-stampe/nelko-p21-ask-mobile/releases/download/v0.0.1/$APK_NAME"
+          echo "$APK_SHA256  work/audit/$APK_NAME" | sha256sum --check
+      - name: Fresh install and launch on Android emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api }}
+          target: google_apis
+          arch: x86_64
+          disable-animations: true
+          emulator-boot-timeout: 600
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: tool/emulator_install_smoke.sh "work/audit/$APK_NAME" work/audit/emulator
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: released-apk-install-api-${{ matrix.api }}
+          path: work/audit/emulator
