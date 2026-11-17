@@ -3,12 +3,21 @@ class Labels {
   final String language;
   String t(String key) => (language == 'da' ? _da[key] : null) ?? _en[key] ?? key;
   static const _en = <String, String>{
+    'label': 'Label', 'labelText': 'Label text', 'fontSize': 'Font size (printer dots)',
+    'alignLeft': 'Left', 'alignCenter': 'Center', 'alignRight': 'Right', 'preview': 'Preview',
+    'labelHelp': 'Write one or more lines. Text wraps automatically. Fixed 14 × 40 mm reference media; Go Regular font.',
+    'rendering': 'Preparing preview…', 'emptyLabel': 'Enter label text',
+    'textOverflow': 'Text does not fit. Reduce the font size or shorten the text. Printing is disabled.',
+    'renderFailed': 'Could not render text. See diagnostics.', 'connectToPrint': 'Connect a printer in the Printers tab to print.',
+    'printLabel': 'Print label (one copy)',
+    'textHardwareTest': 'Preview uses the exact monochrome printer bitmap. Text orientation, margins and Danish letters still need physical validation in v0.0.2.',
+
     'about': 'About / licenses', 'credits': 'Windows reference: Tyler C / ASK Edition (MIT). Protocol research: Merlin Schumacher and Julien Vincent; see repository notices. No mobile hardware confirmation.',
     'title': 'NELKO P21 – ASK Mobile Edition', 'printers': 'Printers', 'diagnostics': 'Diagnostics',
-    'experimental': 'EXPERIMENTAL v0.0.1 — Android Bluetooth and physical printing are NOT hardware-confirmed.',
+    'experimental': 'EXPERIMENTAL v0.0.2 — SPP and test print confirmed on S22. Custom text printing is NOT hardware-confirmed.',
     'slogan': 'Your printer. Your labels. Your data.\nNo cloud. No account. Just print.',
     'idle': 'Ready', 'permission': 'Bluetooth permission required', 'bluetoothOff': 'Bluetooth is off',
-    'connecting': 'Opening SPP socket…', 'connected': 'SPP socket open — physical printing unconfirmed',
+    'connecting': 'Opening SPP socket…', 'connected': 'SPP socket open',
     'reconnecting': 'Waiting / reconnecting…', 'disconnected': 'Disconnected', 'paused': 'Paused in background',
     'unsupported': 'Android Bluetooth unavailable', 'error': 'Initialization failed; inspect log',
     'access': 'Grant Bluetooth access', 'enable': 'Enable Bluetooth', 'settings': 'Bluetooth / pairing settings',
@@ -33,11 +42,20 @@ class Labels {
     'not_connected': 'No active connection.',
   };
   static const _da = <String, String>{
+    'label': 'Etiket', 'labelText': 'Etikettekst', 'fontSize': 'Skriftstørrelse (printerpunkter)',
+    'alignLeft': 'Venstre', 'alignCenter': 'Centrér', 'alignRight': 'Højre', 'preview': 'Forhåndsvisning',
+    'labelHelp': 'Skriv én eller flere linjer. Teksten ombrydes automatisk. Fast 14 × 40 mm referenceetiket; Go Regular-skrift.',
+    'rendering': 'Klargør forhåndsvisning…', 'emptyLabel': 'Skriv etikettekst',
+    'textOverflow': 'Teksten er for stor. Vælg mindre skrift eller kortere tekst. Udskrivning er deaktiveret.',
+    'renderFailed': 'Teksten kunne ikke tegnes. Se diagnostik.', 'connectToPrint': 'Tilslut en printer på fanen Printere for at udskrive.',
+    'printLabel': 'Udskriv etiket (ét eksemplar)',
+    'textHardwareTest': 'Visningen bruger præcis printerens sort/hvide bitmap. Retning, margener og danske tegn skal stadig afprøves fysisk i v0.0.2.',
+
     'about': 'Om / licenser', 'credits': 'Windows-reference: Tyler C / ASK Edition (MIT). Protokolundersøgelse: Merlin Schumacher og Julien Vincent; se repositoryets kreditering. Mobil hardware er ikke bekræftet.',
     'printers': 'Printere', 'diagnostics': 'Diagnostik',
-    'experimental': 'EKSPERIMENTEL v0.0.1 — Android-Bluetooth og fysisk udskrivning er IKKE hardwarebekræftet.',
+    'experimental': 'EKSPERIMENTEL v0.0.2 — SPP og testprint bekræftet på S22. Tekstudskrift er IKKE hardwarebekræftet.',
     'idle': 'Klar', 'permission': 'Bluetooth-tilladelse mangler', 'bluetoothOff': 'Bluetooth er slået fra',
-    'connecting': 'Åbner SPP-forbindelse…', 'connected': 'SPP-forbindelse åben — fysisk udskrivning ubekræftet',
+    'connecting': 'Åbner SPP-forbindelse…', 'connected': 'SPP-forbindelse åben',
     'reconnecting': 'Venter / tilslutter igen…', 'disconnected': 'Afbrudt', 'paused': 'Sat på pause i baggrunden',
     'unsupported': 'Android-Bluetooth er ikke tilgængelig', 'error': 'Start mislykkedes; se loggen',
     'access': 'Giv Bluetooth-adgang', 'enable': 'Slå Bluetooth til', 'settings': 'Bluetooth- og parringsindstillinger',

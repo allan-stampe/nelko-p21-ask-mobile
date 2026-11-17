@@ -19,6 +19,12 @@ List<Uint8List> referencePrintParts() {
       if (border || bar) bitmap[y * 12 + x ~/ 8] &= ~(1 << (7 - x % 8));
     }
   }
+  return bitmapPrintParts(bitmap);
+}
+
+List<Uint8List> bitmapPrintParts(Uint8List bitmap) {
+  if (bitmap.length != 3408) throw ArgumentError('Expected 96x284 / 3408 bitmap bytes');
+  final snapshot = Uint8List.fromList(bitmap);
   Uint8List line(String s) => Uint8List.fromList(ascii.encode(s));
   return [
     line('SIZE 14.0 mm,40.0 mm\r\n'),
@@ -27,7 +33,7 @@ List<Uint8List> referencePrintParts() {
     line('DENSITY 15\r\n'),
     line('CLS\r\n'),
     line('BITMAP 0,0,12,284,1,'),
-    bitmap,
+    snapshot,
     line('\r\n'),
     line('PRINT 1\r\n'),
   ];

@@ -1,4 +1,6 @@
-# Installationstest af v0.0.1 — 17. november 2026
+# Installationstest af v0.0.1 — historisk rapport, 17. november 2026
+
+**Senere status:** Ejeren har nu installeret v0.0.1 på Galaxy S22 og bekræftet SPP og to testprint. Årsagen til det oprindelige afslag er fortsat ukendt; den er ikke efterfølgende blevet udledt af en fejlkode. Nedenstående er den oprindelige undersøgelsesrapport.
 
 **Konklusion: Den originale release-APK kan installeres og startes på Android 12 og Android 16 i emulator. Årsagen til afslaget på Galaxy S22 er endnu ikke fastslået. Ingen ny APK er udgivet, da undersøgelsen ikke har påvist en fejl, som begrunder en rettelse.**
 

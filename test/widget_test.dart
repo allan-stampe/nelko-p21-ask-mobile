@@ -21,4 +21,27 @@ void main() {
     expect(p.exported,contains('NOT CONFIRMED'));
     await tester.pumpWidget(const SizedBox.shrink()); await tester.pumpAndSettle(); await p.close();
   });
+  testWidgets('text editor previews Danish multiline label and prints the exact bitmap', (tester) async {
+    final p=FakePlatform(); final c=PrinterController(p,sleep:(_)async{});
+    await tester.pumpWidget(AskMobileApp(controller:c)); await tester.pumpAndSettle();
+    c.selectDevice(printerA); await c.connectSelected(); await tester.pumpAndSettle();
+    await tester.tap(find.text('Etiket')); await tester.pumpAndSettle();
+    expect(tester.widget<FilledButton>(find.byKey(const Key('print-label'))).onPressed,isNull);
+    await tester.runAsync(() async {
+      await tester.enterText(find.byKey(const Key('label-text')),'HP PROXMOX PVE1\nÆble øl å');
+      await Future<void>.delayed(const Duration(milliseconds:300));
+    });
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('label-preview')),findsOneWidget);
+    expect(tester.widget<FilledButton>(find.byKey(const Key('print-label'))).onPressed,isNotNull);
+    await tester.ensureVisible(find.byKey(const Key('print-label')));
+    await tester.tap(find.byKey(const Key('print-label'))); await tester.pumpAndSettle();
+    expect(p.writes.length,10); expect(p.writes[7].length,3408);
+    expect(p.writes[7].any((b)=>b!=255),true);
+    await tester.tap(find.text('Printere')); await tester.pumpAndSettle();
+    await tester.tap(find.text('Etiket')); await tester.pumpAndSettle();
+    expect(find.text('HP PROXMOX PVE1\nÆble øl å'),findsOneWidget);
+    await tester.pumpWidget(const SizedBox.shrink()); await tester.pumpAndSettle(); await p.close();
+  });
+
 }

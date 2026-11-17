@@ -12,3 +12,7 @@ The byte-exact reference bitmap and TSPL sequence are adapted from [allan-stampe
 - Android platform Bluetooth documentation informs the independently written Kotlin adapter. Flutter SDK supplies framework, localization and standard Android build scaffolding; Flutter is BSD-3-Clause. Framework/transitive dependency licenses are available via the app's About → licenses view.
 
 Pinned research commits and technical evidence are documented in `docs/PROTOCOL.md`. No affiliation with or endorsement by NELKO is implied.
+
+## Bundled Go Regular font
+
+`assets/fonts/Go-Regular.ttf` is the unmodified Go Regular font from `golang.org/x/image` v0.15.0, also used by the Windows reference. Copyright (c) 2016 Bigelow & Holmes Inc. The complete BSD license is preserved in `assets/licenses/Go-Fonts.txt`, the app license registry and release ZIP (`GO-FONTS-LICENSE.txt`).

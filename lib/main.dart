@@ -5,11 +5,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'core/printer_controller.dart';
 import 'i18n.dart';
+import 'label_editor.dart';
 import 'platform/printer_platform.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   LicenseRegistry.addLicense(() async* {
+    yield LicenseEntryWithLineBreaks(['Go Regular font'], await rootBundle.loadString('assets/licenses/Go-Fonts.txt'));
     yield LicenseEntryWithLineBreaks(['ASK Mobile Edition'], await rootBundle.loadString('assets/licenses/Mobile-MIT.txt'));
     yield LicenseEntryWithLineBreaks(['Fyne-P21-Print / ASK Windows reference'], await rootBundle.loadString('assets/licenses/Windows-MIT.txt'));
   });
@@ -44,18 +46,18 @@ class _AskMobileAppState extends State<AskMobileApp> with WidgetsBindingObserver
       title: l.t('title'), locale: Locale(c.language), supportedLocales: const [Locale('da'), Locale('en')],
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff176b70)), useMaterial3: true),
-      home: DefaultTabController(length: 2, child: Scaffold(
+      home: DefaultTabController(length: 3, child: Scaffold(
         appBar: AppBar(title: Text(l.t('title'), style: const TextStyle(fontSize: 18)), actions: [
           DropdownButton<String>(value: c.language, underline: const SizedBox.shrink(),
             items: const [DropdownMenuItem(value: 'da', child: Text('Dansk')), DropdownMenuItem(value: 'en', child: Text('English'))],
             onChanged: (v) { if (v != null) unawaited(c.setLanguage(v)); }),
           Builder(builder: (context) => IconButton(tooltip: l.t('about'), icon: const Icon(Icons.info_outline), onPressed: () {
-            showAboutDialog(context: context, applicationName: l.t('title'), applicationVersion: 'v0.0.1 experimental',
+            showAboutDialog(context: context, applicationName: l.t('title'), applicationVersion: 'v0.0.2 experimental',
               applicationLegalese: 'MIT • ASK Mobile contributors • Tyler C (Windows reference)',
               children: [Text(l.t('experimental')), Text(l.t('credits'))]);
           })),
           const SizedBox(width: 8),
-        ], bottom: TabBar(tabs: [Tab(text: l.t('printers')), Tab(text: l.t('diagnostics'))])),
+        ], bottom: TabBar(tabs: [Tab(text: l.t('printers')), Tab(text: l.t('label')),  Tab(text: l.t('diagnostics'))])),
         body: SafeArea(child: Column(children: [
           Container(width: double.infinity, padding: const EdgeInsets.all(12), color: const Color(0xffffedc2),
             child: Text(l.t('experimental'), style: const TextStyle(fontWeight: FontWeight.w600))),
@@ -64,7 +66,7 @@ class _AskMobileAppState extends State<AskMobileApp> with WidgetsBindingObserver
             const SizedBox(width: 8), Expanded(child: Text(l.t(c.status))),
           ])),
           if (c.errorCode != null) Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: Text(l.t(c.errorCode!), style: TextStyle(color: Theme.of(context).colorScheme.error))),
-          Expanded(child: TabBarView(children: [_printers(l), _diagnostics(l)])),
+          Expanded(child: TabBarView(children: [_printers(l), LabelEditor(controller: c, labels: l), _diagnostics(l)])),
         ])),
       )),
     );

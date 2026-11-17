@@ -1,31 +1,41 @@
 # NELKO P21 – ASK Mobile Edition
 
-**v0.0.1 — experimental Android hardware-test build. Android Bluetooth and printing have NOT been confirmed on physical hardware.**
+**v0.0.2 — experimental Android text labels.** The owner confirmed v0.0.1 installed on a physical Samsung Galaxy S22: Bluetooth Classic SPP works and two reference test prints succeeded. Custom text printing in v0.0.2 still needs physical validation.
 
 Your printer. Your labels. Your data.  
 No cloud. No account. Just print.
 
-A separate Flutter/Dart project, Android first. The working [Windows edition](https://github.com/allan-stampe/nelko-p21-ask-edition) remains unchanged. Its v1.0.1 Windows 11 / COM4 test has produced 12 labels according to the owner; that result does not validate this Android transport.
+## Install
 
-## Install and test
+Download the universal APK from [v0.0.2 releases](https://github.com/allan-stampe/nelko-p21-ask-mobile/releases/tag/v0.0.2), verify SHA256SUMS.txt and install directly (Android 8/API 26+, no Play Store required).
 
-Download the APK from [experimental releases](https://github.com/allan-stampe/nelko-p21-ask-mobile/releases/tag/v0.0.1), check SHA256SUMS.txt, and permit installation from your chosen browser/file manager in Android settings. Android 8.0 (API 26) or newer is required. No Play Store is needed. This is a test-key-signed release APK, not a production signing identity. CI runners generate temporary test keys: later builds can require uninstalling the previous app, which deletes its preferences. Export needed logs first. The release includes the public certificate fingerprint.
+**Upgrade notice:** these experimental CI builds use temporary Android test signing keys. v0.0.2 is not signed with the unavailable private key from the v0.0.1 runner. Uninstall v0.0.1 before installing v0.0.2 if Android rejects the update. Uninstalling deletes saved language/printer/reconnect settings; export any needed logs first and select the printer again. A stable owner-controlled production signing identity remains future work. The public signer fingerprint accompanies each release.
 
-1. Close the Windows app/PowerShell connection. A printer may accept only one connection.
-2. Enable Bluetooth, grant requested Nearby devices permissions (older Android requires location permission for discovery), search, and select the correct printer. Android handles pairing.
-3. Connect. A connected socket is not proof of printer compatibility.
-4. Try battery query, Cancel Pause, then one reference test print with suitable 14 × 40 mm media. Do not repeatedly queue prints.
-5. Export the diagnostics and follow [the hardware test checklist](docs/HARDWARE-TEST.md).
+## Print your own text
 
-The interface supports Danish and English. It provides Classic SPP discovery, paired-device selection, foreground reconnect to the selected device, connection status, experimental battery parsing, Cancel Pause, the Windows-reference print, and UTC ASCII/HEX diagnostics export. BLE-only devices are displayed but cannot connect in v0.0.1. There is no advanced label designer yet.
+1. Close other clients including Windows/PowerShell. Enable Bluetooth, grant access, search/select the correct printer and connect in **Printers / Printere**.
+2. Open **Label / Etiket** and enter one or more lines, for example:
 
-## Privacy and operation
+   ```text
+   HP PROXMOX PVE1
+   192.168.1.2
+   ```
 
-No cloud, account, advertisements, subscription, telemetry, or runtime Internet permission. Normal operation is local and offline. Preferences (language, selected Bluetooth address/name, reconnect setting) use private Android SharedPreferences; backup and device-transfer backup are disabled. Logs are bounded in memory until exported with Android's local-only document picker. Logs can contain printer addresses and payload data: review before sharing. No location is collected; legacy Android requires its permission for Bluetooth discovery. Reconnect runs while the app is foregrounded; backgrounding closes the socket and cancels work. Failed print jobs are never replayed automatically.
+3. Select 12, 16, 20, 24, 28 or 32 printer dots and left/center/right alignment. Automatic wrapping is enabled. The bundled Go Regular font supports Danish æ, ø, å and uppercase variants, without downloading fonts.
+4. Inspect the monochrome landscape preview. It is reconstructed from the exact bitmap to be sent. If text overflows, reduce font size or shorten it; printing is disabled rather than silently truncating a label.
+5. Use **Print label (one copy) / Udskriv etiket (ét eksemplar)**. It sends one captured bitmap. Wait until the command has settled; failed/interrupted jobs are never replayed automatically.
+
+Reference media remains **14 × 40 mm**, density 15, gap 5 mm; the tested 96×284 bitmap geometry is preserved. Preview is not physical scale on the screen. Small text readability, orientation, margins and Danish glyphs need a real v0.0.2 print test. See [text printing details](docs/TEXT-PRINTING-v0.0.2.md).
+
+The existing **Diagnostics** tab retains battery query, Cancel Pause, original reference test print, and timestamped ASCII/HEX logs with local export. Danish/English UI, paired-device selection, foreground reconnect and local preferences remain. BLE and iOS are future work. There is no advanced designer/library in this version.
+
+## Local and offline
+
+No cloud, account, ads, subscription, telemetry or runtime Internet permission. Settings use private SharedPreferences with cloud/device-transfer backup disabled. Label text stays in memory during the app session (including tab switches); v0.0.2 does not save a label library or restore text after process termination. Logs are bounded in memory until local export and can contain printer identifiers and bitmap data. Review before sharing. Foreground reconnect remembers the chosen device; backgrounding closes transport and cancels work without print replay.
 
 ## Build and checks
 
-Use Flutter **3.38.5**, Java 17 and Android SDK tools. First setup/build needs Internet access for development dependencies; the installed application does not.
+Flutter **3.38.5**, Java 17, Android SDK. Dependency/tool downloads need Internet during development; normal app use does not.
 
 ```sh
 flutter config --no-analytics
@@ -38,10 +48,8 @@ flutter build apk --release --no-pub
 (cd android && ./gradlew lintRelease)
 ```
 
-Standard Android/Gradle infrastructure is committed. If missing, the bootstrap generates it using the pinned Flutter SDK, preserving the authored manifest and native transport. GitHub Actions performs these checks, inspects the merged APK permissions, verifies signing, and produces an installable universal APK, ZIP and checksum. A successful `v0.0.1` tag build publishes a prerelease. Unit tests use fake transports; they cannot certify Bluetooth hardware.
+GitHub Actions checks tests/lint, the merged APK permissions, signing, and fresh APK installation/start on Android 12/API 31 and Android 16/API 36 x86_64 emulators before publishing a tag prerelease. Physical Bluetooth/printing cannot be certified by those emulators. Standard Gradle infrastructure is committed; the bootstrap can restore missing generated files.
 
-See [protocol](docs/PROTOCOL.md), [technical decisions](docs/DECISIONS.md), [roadmap](ROADMAP.md), [changelog](CHANGELOG.md) and [credits](THIRD_PARTY_NOTICES.md). MIT licensed; original Windows developer Tyler C's license is preserved in the repository and application's license screen.
+See [protocol](docs/PROTOCOL.md), [hardware checklist](docs/HARDWARE-TEST.md), [decisions](docs/DECISIONS.md), [roadmap](ROADMAP.md), [changelog](CHANGELOG.md) and [credits](THIRD_PARTY_NOTICES.md). Windows v1.0.1 is read-only and unchanged. Original MIT developer Tyler C's license and bundled font BSD license are retained in source, distribution and app licenses.
 
-## Installation investigation: Galaxy S22
-
-The unchanged v0.0.1 APK passed signature, manifest, ABI/alignment and integrity checks, and fresh installation/launch on Android 12 and Android 16 x86_64 emulators. The reported Samsung One UI 8 installation refusal is **not yet explained**. See the [evidence report](docs/INSTALLATION-AUDIT-v0.0.1.md) and [Windows/ADB diagnostic steps](docs/S22-INSTALL-DIAGNOSTICS.md). No replacement APK has been issued without an identified cause.
+The earlier [v0.0.1 installation investigation](docs/INSTALLATION-AUDIT-v0.0.1.md) is historical: the owner now confirms successful installation, but the original generic refusal's cause was never established.
