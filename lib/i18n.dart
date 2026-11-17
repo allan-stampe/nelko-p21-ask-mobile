@@ -12,7 +12,7 @@ class Labels {
     'printLabel': 'Print label (one copy)',
     'textHardwareTest': 'Preview uses the exact monochrome printer bitmap. Text orientation, margins and Danish letters still need physical validation in v0.0.2.',
 
-    'about': 'About / licenses', 'credits': 'Windows reference: Tyler C / ASK Edition (MIT). Protocol research: Merlin Schumacher and Julien Vincent; see repository notices. No mobile hardware confirmation.',
+    'about': 'About / licenses', 'credits': 'Windows reference: Tyler C / ASK Edition (MIT). Protocol research: Merlin Schumacher and Julien Vincent; see repository notices. Custom text output still awaits physical validation.',
     'title': 'NELKO P21 – ASK Mobile Edition', 'printers': 'Printers', 'diagnostics': 'Diagnostics',
     'experimental': 'EXPERIMENTAL v0.0.2 — SPP and test print confirmed on S22. Custom text printing is NOT hardware-confirmed.',
     'slogan': 'Your printer. Your labels. Your data.\nNo cloud. No account. Just print.',
@@ -51,7 +51,7 @@ class Labels {
     'printLabel': 'Udskriv etiket (ét eksemplar)',
     'textHardwareTest': 'Visningen bruger præcis printerens sort/hvide bitmap. Retning, margener og danske tegn skal stadig afprøves fysisk i v0.0.2.',
 
-    'about': 'Om / licenser', 'credits': 'Windows-reference: Tyler C / ASK Edition (MIT). Protokolundersøgelse: Merlin Schumacher og Julien Vincent; se repositoryets kreditering. Mobil hardware er ikke bekræftet.',
+    'about': 'Om / licenser', 'credits': 'Windows-reference: Tyler C / ASK Edition (MIT). Protokolundersøgelse: Merlin Schumacher og Julien Vincent; se repositoryets kreditering. Tekstudskrift afventer fysisk afprøvning.',
     'printers': 'Printere', 'diagnostics': 'Diagnostik',
     'experimental': 'EKSPERIMENTEL v0.0.2 — SPP og testprint bekræftet på S22. Tekstudskrift er IKKE hardwarebekræftet.',
     'idle': 'Klar', 'permission': 'Bluetooth-tilladelse mangler', 'bluetoothOff': 'Bluetooth er slået fra',
