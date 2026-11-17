@@ -83,6 +83,7 @@ jobs:
             android/settings.gradle.kts
             android/build.gradle.kts
             android/gradle.properties
+            work/text-label-preview.png
             coverage/lcov.info
             build/app/reports/lint-results-release.html
           if-no-files-found: ignore

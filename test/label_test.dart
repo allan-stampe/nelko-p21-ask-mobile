@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nelko_p21_ask_mobile/core/label_bitmap.dart';
 import 'package:nelko_p21_ask_mobile/core/label_renderer.dart';
@@ -40,6 +41,9 @@ void main() {
   });
   testWidgets('bundled font renders the requested two-line label and Danish glyphs', (tester) async {
     final label = (await tester.runAsync(() => renderLabel('HP PROXMOX PVE1\n192.168.1.2',20,LabelAlignment.center)))!;
+    await tester.runAsync(() async {
+      final file=File('work/text-label-preview.png'); await file.parent.create(recursive:true); await file.writeAsBytes(label.previewPng);
+    });
     expect(label.printable,true); expect(label.lineCount,2); expect(label.bitmap,hasLength(3408));
     expect(label.bitmap.any((b)=>b!=255),true);
     expect(label.previewPng.take(8), orderedEquals([137,80,78,71,13,10,26,10]));

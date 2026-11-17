@@ -22,6 +22,8 @@ void main() {
     await tester.pumpWidget(const SizedBox.shrink()); await tester.pumpAndSettle(); await p.close();
   });
   testWidgets('text editor previews Danish multiline label and prints the exact bitmap', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(400,1100));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
     final p=FakePlatform(); final c=PrinterController(p,sleep:(_)async{});
     await tester.pumpWidget(AskMobileApp(controller:c)); await tester.pumpAndSettle();
     c.selectDevice(printerA); await c.connectSelected(); await tester.pumpAndSettle();
