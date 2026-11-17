@@ -66,11 +66,11 @@ jobs:
           signer=$(find "$ANDROID_HOME/build-tools" -name apksigner -type f | sort -V | tail -1)
           "$signer" verify --print-certs dist/NELKO-P21-ASK-Mobile-v0.0.2-experimental.apk > dist/APK-CERTIFICATE.txt
           cp LICENSE README.md CHANGELOG.md ROADMAP.md THIRD_PARTY_NOTICES.md dist/
-          cp docs/PROTOCOL.md docs/HARDWARE-TEST.md docs/DECISIONS.md docs/TEXT-PRINTING-v0.0.2.md dist/
+          cp -R docs dist/docs
           cp assets/licenses/Go-Fonts.txt dist/GO-FONTS-LICENSE.txt
           cd dist
           sha256sum NELKO-P21-ASK-Mobile-v0.0.2-experimental.apk > SHA256SUMS.txt
-          zip NELKO-P21-ASK-Mobile-v0.0.2-experimental.zip *
+          zip -r NELKO-P21-ASK-Mobile-v0.0.2-experimental.zip *
       - uses: actions/upload-artifact@v4
         if: always()
         with:

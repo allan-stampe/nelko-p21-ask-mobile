@@ -25,6 +25,8 @@ Download the universal APK from [v0.0.2 releases](https://github.com/allan-stamp
 4. Inspect the monochrome landscape preview. It is reconstructed from the exact bitmap to be sent. If text overflows, reduce font size or shorten it; printing is disabled rather than silently truncating a label.
 5. Use **Print label (one copy) / Udskriv etiket (ét eksemplar)**. It sends one captured bitmap. Wait until the command has settled; failed/interrupted jobs are never replayed automatically.
 
+![Exact monochrome bitmap preview of the example](docs/images/text-label-preview-v0.0.2.png)
+
 Reference media remains **14 × 40 mm**, density 15, gap 5 mm; the tested 96×284 bitmap geometry is preserved. Preview is not physical scale on the screen. Small text readability, orientation, margins and Danish glyphs need a real v0.0.2 print test. See [text printing details](docs/TEXT-PRINTING-v0.0.2.md).
 
 The existing **Diagnostics** tab retains battery query, Cancel Pause, original reference test print, and timestamped ASCII/HEX logs with local export. Danish/English UI, paired-device selection, foreground reconnect and local preferences remain. BLE and iOS are future work. There is no advanced designer/library in this version.
