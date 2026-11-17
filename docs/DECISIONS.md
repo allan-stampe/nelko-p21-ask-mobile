@@ -10,3 +10,7 @@
 - **Distribution:** universal release-mode APK with Android's generated debug/test signing configuration for this explicitly experimental release. No private signing material in source/artifacts. The certificate is public and included for audit. CI-generated keys are ephemeral, so upgrades across builds may require uninstalling and losing preferences. Establish a protected, owner-controlled stable release key before wider distribution.
 - **Licensing:** MIT project, preserved Tyler C attribution for adapted Windows bitmap/protocol code. AGPL Python project is protocol research only; none of its implementation is copied or translated. Flutter framework/dependency notices are exposed in the application's license screen.
 - **Verification boundary:** golden-byte, parser, state-machine and widget tests plus Android lint and APK manifest inspection cover automated behavior. Only the owner can confirm radio transport and printing using the physical printer. No advanced designer before that milestone.
+
+## v0.0.2 text pipeline
+
+The owner confirmed v0.0.1 SPP/reference printing on S22. The unchanged Kotlin transport now also carries a snapshotted Dart-rasterized text bitmap. Fixed 284×96 landscape layout, clockwise 96×284 printer rotation, bundled offline Go Regular, threshold 128 and exact packed-bit preview follow the Windows rendering convention. Overflow blocks printing. Details and remaining physical limits: [text pipeline](TEXT-PRINTING-v0.0.2.md). Current built APKs must pass API 31/36 emulator installation/start before a tagged release is published.

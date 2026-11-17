@@ -1,7 +1,7 @@
 name: nelko_p21_ask_mobile
-description: Experimental offline NELKO P21 Bluetooth diagnostics. No cloud. No account. Just print.
+description: Offline NELKO P21 text labels and Bluetooth diagnostics. No cloud. No account. Just print.
 publish_to: none
-version: 0.0.1+1
+version: 0.0.2+2
 environment:
   sdk: '>=3.10.0 <4.0.0'
 dependencies:
@@ -17,3 +17,5 @@ flutter:
   assets:
     - assets/licenses/Mobile-MIT.txt
     - assets/licenses/Windows-MIT.txt
+    - assets/fonts/Go-Regular.ttf
+    - assets/licenses/Go-Fonts.txt

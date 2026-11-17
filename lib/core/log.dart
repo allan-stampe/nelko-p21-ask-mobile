@@ -61,8 +61,8 @@ class DiagnosticLog {
       discarded++;
     }
   }
-  String export() => 'NELKO P21 – ASK Mobile Edition v0.0.1 (EXPERIMENTAL)\n'
-      'Android/P21 hardware communication NOT CONFIRMED.\n'
+  String export() => 'NELKO P21 – ASK Mobile Edition v0.0.2 (EXPERIMENTAL)\n'
+      'Owner confirmed v0.0.1 SPP and two test prints on Samsung S22. v0.0.2 custom text hardware output NOT CONFIRMED.\n'
       'UTC timestamps. TX = bytes accepted by Android API, not printer acknowledgement.\n'
       'RX = bytes read from the socket. Includes Bluetooth identifiers; exported only by user.\n'
       'Older records discarded: $discarded\n\n${_entries.map((e) => e.text).join('\n')}';

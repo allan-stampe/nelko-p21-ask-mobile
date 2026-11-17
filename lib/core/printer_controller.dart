@@ -61,7 +61,7 @@ class PrinterController extends ChangeNotifier {
         _lost(_code(e));
       });
       await refreshState();
-      _record('INFO', note: 'v0.0.1 experimental; Android/P21 NOT hardware-confirmed; API $androidSdk; SPP $sppUuid');
+      _record('INFO', note: 'v0.0.2 experimental; SPP/reference print confirmed by owner on S22; custom text NOT hardware-confirmed; API $androidSdk; SPP $sppUuid');
       if (hasAccess && available && bluetoothEnabled) {
         await loadBonded();
         if (_wantConnection) await connectSelected();
@@ -265,6 +265,16 @@ class PrinterController extends ChangeNotifier {
     for (final part in referencePrintParts()) { await _write(part, token); }
     _record('WAIT', note: '3 seconds after PRINT'); await _sleep(printSettleDelay);
   });
+  void recordLayoutError(Object error) => _record('ERROR', note: 'Text rasterization: $error');
+  Future<void> printLabel(Uint8List bitmap) {
+    final parts = bitmapPrintParts(bitmap); // Snapshot before any await/UI edit.
+    return _action('Text label print', (token) async {
+      await _write(cancelPauseBytes, token);
+      _record('WAIT', note: '500 ms after Cancel Pause'); await _sleep(cancelPauseDelay);
+      for (final part in parts) { await _write(part, token); }
+      _record('WAIT', note: '3 seconds after PRINT'); await _sleep(printSettleDelay);
+    });
+  }
   Future<void> testBattery() => _action('Battery query', (token) async {
     final buffer = BytesBuilder(copy: true); _batteryBytes = buffer;
     try {
@@ -275,7 +285,7 @@ class PrinterController extends ChangeNotifier {
   });
   Future<void> exportLog() async {
     try {
-      final name = 'NELKO-P21-ASK-Mobile-v0.0.1-${DateTime.now().toUtc().toIso8601String().replaceAll(':', '-')}.log';
+      final name = 'NELKO-P21-ASK-Mobile-v0.0.2-${DateTime.now().toUtc().toIso8601String().replaceAll(':', '-')}.log';
       final saved = await platform.exportLog(log.export(), name);
       _record('INFO', note: saved ? 'Log exported through local-only Android document picker' : 'Log export cancelled');
     } catch (e) { _record('ERROR', note: 'Log export: $e'); }

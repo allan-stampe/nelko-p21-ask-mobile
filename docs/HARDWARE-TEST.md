@@ -1,6 +1,10 @@
-# Physical Android test — pending
+# Physical testing status
 
-**No Android hardware success is claimed.** Windows v1.0.1's 12 successful labels are reference evidence only.
+Owner confirmation for v0.0.1: installed on Samsung Galaxy S22, Bluetooth connection works, two reference prints succeeded (observed pattern: three vertical strokes). This supersedes the earlier pending Android baseline below. The cause of the earlier generic installation refusal was never established.
+
+For v0.0.2 use the [text-label checklist](TEXT-PRINTING-v0.0.2.md). Text orientation, margins, size and Danish glyphs still need physical validation. Battery interpretation and all reconnection scenarios are not implied by two successful prints.
+
+## Original baseline checklist (historical)
 
 Record APK SHA256/certificate, phone model, Android version, printer/firmware identification if available, media, locale, date, battery state and each result below. Do not include private addresses in public reports unless intended.
 

@@ -3,14 +3,14 @@
 Your printer. Your labels. Your data.  
 No cloud. No account. Just print.
 
-## First: validate v0.0.1 on Android hardware
+## Confirmed baseline and next physical milestone
 
-Record phone/Android/printer versions, pairing and discovery, SPP connection, battery response bytes, Cancel Pause, exact-reference printing, reconnect and exported diagnostics. Fix transport problems based on evidence. No claim of working Android printing until the owner confirms it.
+The owner confirmed v0.0.1 installed on Samsung Galaxy S22, SPP connection works and two reference prints succeeded. v0.0.2 adds simple text labels; physically validate its orientation, margins, typography and Danish glyphs next. Battery parsing and reconnect scenarios also need separate evidence.
 
 ## After transport validation
 
 - Stable owner-controlled signing and upgrade policy.
-- Label library, local templates and basic text editing; then advanced designer.
+- Label library, persisted text and local templates; then advanced designer (basic text editing is now implemented in v0.0.2).
 - Better media controls and printer-specific capability handling.
 - BLE transport experiments using documented FF00-family services, independently validated before release.
 - More Android device/permission/lifecycle testing and accessibility improvements.

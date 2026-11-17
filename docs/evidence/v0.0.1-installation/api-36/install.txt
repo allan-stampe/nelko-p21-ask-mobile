@@ -1,0 +1,3 @@
+work/audit/NELKO-P21-ASK-Mobile-v0.0.1-experimental.apk: 1 file pushed, 0 skipped. 123.2 MB/s (48647440 bytes in 0.377s)
+Performing Push Install
+Success

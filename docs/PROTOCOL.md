@@ -2,7 +2,7 @@
 
 ## Evidence boundaries
 
-The owner confirmed Windows v1.0.1 on Windows 11 through COM4, 115200 baud, 8N1, and reports 12 successful labels. The earlier COM5 experiment used the sequence below. Selecting the correct COM port resolved the last desktop issue; no individual command difference has been proven to be the fix. Android uses RFCOMM, not a selectable Windows COM port or UART baud rate. Android communication is **unconfirmed**.
+The owner confirmed Windows v1.0.1 on Windows 11 through COM4, 115200 baud, 8N1, and reports 12 successful labels. The earlier COM5 experiment used the sequence below. Selecting the correct COM port resolved the last desktop issue; no individual command difference has been proven to be the fix. Android uses RFCOMM, not a selectable Windows COM port or UART baud rate. The owner has now confirmed v0.0.1 SPP connection and two reference prints on a physical Samsung Galaxy S22. New v0.0.2 text raster output remains **unconfirmed**; see [text pipeline](TEXT-PRINTING-v0.0.2.md).
 
 ## Byte-exact Windows reference
 

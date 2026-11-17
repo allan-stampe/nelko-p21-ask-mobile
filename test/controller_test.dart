@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nelko_p21_ask_mobile/core/printer_controller.dart';
 import 'package:nelko_p21_ask_mobile/core/protocol.dart';
@@ -39,6 +40,20 @@ void main() {
     expect(waits,[cancelPauseDelay,printSettleDelay]); expect(counts,[1,10]);
     expect(p.writes.expand((b)=>b).toList(),orderedEquals([...cancelPauseBytes,...File('test/fixtures/windows_reference.bin').readAsBytesSync()]));
     expect(c.log.export(),contains('hardware output NOT confirmed'));
+  });
+  test('custom text bitmap is snapshotted, serialized and sent with reference timing', () async {
+    final entered=Completer<void>(); final release=Completer<void>(); final waits=<Duration>[];
+    c.dispose(); c=PrinterController(p,sleep:(d)async{waits.add(d);if(d==cancelPauseDelay){entered.complete();await release.future;}});
+    await connect();
+    final bitmap=Uint8List(3408)..fillRange(0,3408,255); bitmap[0]=0x7f;
+    final printing=c.printLabel(bitmap); await entered.future;
+    bitmap.fillRange(0,3408,0);
+    await c.testPrint(); expect(p.writes.length,1);
+    release.complete(); await printing;
+    expect(waits,[cancelPauseDelay,printSettleDelay]); expect(p.writes.length,10);
+    expect(p.writes[7][0],0x7f); expect(p.writes[7][1],255);
+    expect(String.fromCharCodes(p.writes[6]),'BITMAP 0,0,12,284,1,');
+    expect(String.fromCharCodes(p.writes[9]),'PRINT 1\r\n');
   });
   test('Cancel Pause alone sends no CRLF and waits 500 ms', () async {
     final waits=<Duration>[]; c.dispose(); c=PrinterController(p,sleep:(d)async{waits.add(d);});
@@ -111,7 +126,7 @@ void main() {
   });
   test('log export is available without a Bluetooth connection', () async {
     await c.initialize(); await c.exportLog();
-    expect(p.exported,contains('v0.0.1')); expect(p.exported,contains('NOT CONFIRMED'));
+    expect(p.exported,contains('v0.0.2')); expect(p.exported,contains('NOT CONFIRMED'));
     expect(c.connected,false);
   });
 }
