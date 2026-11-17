@@ -1,0 +1,61 @@
+{
+  "sha256": "7b3957e467b8b7c2299dcc0b00e35b44c68996cfc7a7ef668ddb2d425199f24d",
+  "size": 48647440,
+  "zip_crc": "OK",
+  "libraries": [
+    {
+      "path": "lib/arm64-v8a/libapp.so",
+      "elf_machine": 183,
+      "elf_bits": 64,
+      "bytes": 5309360,
+      "compression": 0,
+      "data_offset": 229376,
+      "zip_aligned_16k": true
+    },
+    {
+      "path": "lib/arm64-v8a/libflutter.so",
+      "elf_machine": 183,
+      "elf_bits": 64,
+      "bytes": 11107920,
+      "compression": 0,
+      "data_offset": 5554176,
+      "zip_aligned_16k": true
+    },
+    {
+      "path": "lib/armeabi-v7a/libapp.so",
+      "elf_machine": 40,
+      "elf_bits": 32,
+      "bytes": 5866076,
+      "compression": 0,
+      "data_offset": 16662528,
+      "zip_aligned_16k": true
+    },
+    {
+      "path": "lib/armeabi-v7a/libflutter.so",
+      "elf_machine": 40,
+      "elf_bits": 32,
+      "bytes": 8096376,
+      "compression": 0,
+      "data_offset": 22544384,
+      "zip_aligned_16k": true
+    },
+    {
+      "path": "lib/x86_64/libapp.so",
+      "elf_machine": 62,
+      "elf_bits": 64,
+      "bytes": 5440432,
+      "compression": 0,
+      "data_offset": 30654464,
+      "zip_aligned_16k": true
+    },
+    {
+      "path": "lib/x86_64/libflutter.so",
+      "elf_machine": 62,
+      "elf_bits": 64,
+      "bytes": 12344472,
+      "compression": 0,
+      "data_offset": 36110336,
+      "zip_aligned_16k": true
+    }
+  ]
+}

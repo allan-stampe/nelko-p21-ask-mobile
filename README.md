@@ -41,3 +41,7 @@ flutter build apk --release --no-pub
 Standard Android/Gradle infrastructure is committed. If missing, the bootstrap generates it using the pinned Flutter SDK, preserving the authored manifest and native transport. GitHub Actions performs these checks, inspects the merged APK permissions, verifies signing, and produces an installable universal APK, ZIP and checksum. A successful `v0.0.1` tag build publishes a prerelease. Unit tests use fake transports; they cannot certify Bluetooth hardware.
 
 See [protocol](docs/PROTOCOL.md), [technical decisions](docs/DECISIONS.md), [roadmap](ROADMAP.md), [changelog](CHANGELOG.md) and [credits](THIRD_PARTY_NOTICES.md). MIT licensed; original Windows developer Tyler C's license is preserved in the repository and application's license screen.
+
+## Installation investigation: Galaxy S22
+
+The unchanged v0.0.1 APK passed signature, manifest, ABI/alignment and integrity checks, and fresh installation/launch on Android 12 and Android 16 x86_64 emulators. The reported Samsung One UI 8 installation refusal is **not yet explained**. See the [evidence report](docs/INSTALLATION-AUDIT-v0.0.1.md) and [Windows/ADB diagnostic steps](docs/S22-INSTALL-DIAGNOSTICS.md). No replacement APK has been issued without an identified cause.

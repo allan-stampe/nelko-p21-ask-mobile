@@ -1,0 +1,7 @@
+Starting: Intent { cmp=dk.ask.nelko_p21_ask_mobile/.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: dk.ask.nelko_p21_ask_mobile/.MainActivity
+TotalTime: 2068
+WaitTime: 2090
+Complete

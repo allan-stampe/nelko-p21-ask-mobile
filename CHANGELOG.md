@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased — installation investigation
+
+- Audit the unchanged public v0.0.1 APK with Android signing, manifest, ZIP/ELF/alignment checks.
+- Add reproducible fresh-install/launch CI tests on Android 12/API 31 and Android 16/API 36.
+- Record passing emulator evidence and Samsung Galaxy S22/One UI 8 diagnostic instructions.
+- No runtime/Bluetooth changes or replacement release; the device-specific refusal remains unexplained pending its installation error code.
+
 ## 0.0.1 — experimental
 
 - New standalone Flutter/Dart Android project; no changes to the Windows repository.
