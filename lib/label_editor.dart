@@ -81,7 +81,7 @@ class _LabelEditorState extends State<LabelEditor> with AutomaticKeepAliveClient
       if (!c.connected) Text(l.t('connectToPrint')),
       const SizedBox(height: 12),
       FilledButton.icon(key: const Key('print-label'), icon: const Icon(Icons.print),
-        onPressed: canPrint && raster != null ? () => c.printLabel(raster.bitmap) : null,
+        onPressed: canPrint ? () => c.printLabel(raster.bitmap) : null,
         label: Padding(padding: const EdgeInsets.all(8), child: Text(l.t(c.busy ? 'busy' : 'printLabel')))),
       const SizedBox(height: 8), Text(l.t('textHardwareTest'), style: const TextStyle(fontSize: 12)),
     ]);
