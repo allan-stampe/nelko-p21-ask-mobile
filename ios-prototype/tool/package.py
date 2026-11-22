@@ -8,6 +8,9 @@ assert p['CFBundleSupportedPlatforms']==['iPhoneOS']
 assert float(p['MinimumOSVersion'])==15.0
 assert p['NSBluetoothAlwaysUsageDescription']
 assert not p.get('UIBackgroundModes')
+# Preserve full upstream notices inside the IPA, even when downloaded alone.
+for name in ['ASK-MIT.txt','Windows-MIT.txt','Go-Fonts.txt']:
+    assert (app/'Frameworks/App.framework/flutter_assets/assets/licenses'/name).read_bytes()==Path('assets/licenses',name).read_bytes()
 for binary in ['Runner','Frameworks/App.framework/App','Frameworks/Flutter.framework/Flutter']:
     arch=subprocess.check_output(['lipo','-archs',str(app/binary)],text=True).strip()
     assert arch=='arm64',(binary,arch)

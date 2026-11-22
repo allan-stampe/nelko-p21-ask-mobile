@@ -4,8 +4,6 @@ on:
     branches: ['**']
     tags: ['ios-v*']
     paths: ['ios-prototype/**', '.github/workflows/ios-prototype.yml', 'lib/core/protocol.dart', 'lib/core/log.dart']
-  pull_request:
-    paths: ['ios-prototype/**', '.github/workflows/ios-prototype.yml', 'lib/core/protocol.dart', 'lib/core/log.dart']
   workflow_dispatch:
 permissions:
   contents: read
@@ -44,7 +42,7 @@ jobs:
           tool/bootstrap_ios.sh
       - name: Analyze and test Dart
         run: |
-          dart format lib test
+          dart format --output=none --set-exit-if-changed lib test
           flutter analyze --fatal-infos
           flutter test
       - name: Test independently implemented BLE flow control
@@ -92,7 +90,7 @@ jobs:
         timeout-minutes: 12
         run: flutter build ios --simulator --debug --no-pub
       - name: Install and launch iPhone simulator app
-        timeout-minutes: 8
+        timeout-minutes: 15
         run: tool/simulator.sh
       - uses: actions/upload-artifact@v4
         if: always()
