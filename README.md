@@ -1,15 +1,17 @@
 # NELKO P21 – ASK Mobile Edition
 
-**v0.0.2 — experimental Android text labels.** The owner confirmed v0.0.1 installed on a physical Samsung Galaxy S22: Bluetooth Classic SPP works and two reference test prints succeeded. Custom text printing in v0.0.2 still needs physical validation.
+**v0.0.3 — Android text labels; top warning banner removed.** The owner confirmed v0.0.1 installed on a physical Samsung Galaxy S22: Bluetooth Classic SPP works and two reference test prints succeeded. Custom text printing in v0.0.2 still needs physical validation.
 
 Your printer. Your labels. Your data.  
 No cloud. No account. Just print.
 
 ## Install
 
-Download the universal APK from [v0.0.2 releases](https://github.com/allan-stampe/nelko-p21-ask-mobile/releases/tag/v0.0.2), verify SHA256SUMS.txt and install directly (Android 8/API 26+, no Play Store required).
+Download the universal APK from [v0.0.3 releases](https://github.com/allan-stampe/nelko-p21-ask-mobile/releases/tag/v0.0.3), verify SHA256SUMS.txt and install directly (Android 8/API 26+, no Play Store required).
 
-**Upgrade notice:** these experimental CI builds use temporary Android test signing keys. v0.0.2 is not signed with the unavailable private key from the v0.0.1 runner. Uninstall v0.0.1 before installing v0.0.2 if Android rejects the update. Uninstalling deletes saved language/printer/reconnect settings; export any needed logs first and select the printer again. A stable owner-controlled production signing identity remains future work. The public signer fingerprint accompanies each release.
+**Upgrade notice:** these CI builds use temporary Android test signing keys. Updating from an earlier version can require uninstalling it first. Uninstalling deletes saved language/printer/reconnect settings; export needed logs first, then select the printer again. The public signer fingerprint accompanies each release.
+
+v0.0.3 removes only the yellow top-of-app warning and updates version metadata. Bluetooth SPP, printer/bitmap code, the remaining UI and Android app icon are unchanged from v0.0.2. The existing hardware-test limitations remain documented; removing the banner does not claim new physical validation.
 
 ## Print your own text
 
