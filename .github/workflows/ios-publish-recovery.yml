@@ -3,7 +3,7 @@
 name: Publish verified iOS 0.0.1 artifact
 on:
   push:
-    branches: ['ios/ble-sideload-prototype']
+    branches: ['main']
     paths: ['.github/workflows/ios-publish-recovery.yml']
 permissions:
   contents: read
@@ -61,7 +61,6 @@ jobs:
       - uses: softprops/action-gh-release@v2
         with:
           tag_name: ios-v0.0.1
-          target_commitish: c61ff1e785960e60adf301df715c451cafefaca0
           name: ASK iOS BLE Test 0.0.1 — unsigned hardware-test prototype
           body_path: ios-prototype/RELEASE.md
           prerelease: true
