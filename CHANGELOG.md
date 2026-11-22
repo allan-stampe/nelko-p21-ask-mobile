@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.0.3
+
+- Remove the yellow experimental warning box at the top of the app.
+- Update Android/app version to 0.0.3 (versionCode 3).
+- Preserve Bluetooth SPP, printer/bitmap code, other UI/functions and Android icon unchanged from v0.0.2.
+- Build and publish the APK using the existing test/lint/signing/emulator-gated GitHub Actions workflow.
+
 ## 0.0.2 — experimental
 
 - Owner confirmed v0.0.1 installation, Bluetooth Classic SPP and two test prints on physical Samsung Galaxy S22; the original installation refusal's cause remains unknown.

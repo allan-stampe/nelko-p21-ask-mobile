@@ -52,15 +52,13 @@ class _AskMobileAppState extends State<AskMobileApp> with WidgetsBindingObserver
             items: const [DropdownMenuItem(value: 'da', child: Text('Dansk')), DropdownMenuItem(value: 'en', child: Text('English'))],
             onChanged: (v) { if (v != null) unawaited(c.setLanguage(v)); }),
           Builder(builder: (context) => IconButton(tooltip: l.t('about'), icon: const Icon(Icons.info_outline), onPressed: () {
-            showAboutDialog(context: context, applicationName: l.t('title'), applicationVersion: 'v0.0.2 experimental',
+            showAboutDialog(context: context, applicationName: l.t('title'), applicationVersion: 'v0.0.3 experimental',
               applicationLegalese: 'MIT • ASK Mobile contributors • Tyler C (Windows reference)',
               children: [Text(l.t('experimental')), Text(l.t('credits'))]);
           })),
           const SizedBox(width: 8),
         ], bottom: TabBar(tabs: [Tab(text: l.t('printers')), Tab(text: l.t('label')),  Tab(text: l.t('diagnostics'))])),
         body: SafeArea(child: Column(children: [
-          Container(width: double.infinity, padding: const EdgeInsets.all(12), color: const Color(0xffffedc2),
-            child: Text(l.t('experimental'), style: const TextStyle(fontWeight: FontWeight.w600))),
           Padding(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8), child: Row(children: [
             Icon(c.connected ? Icons.bluetooth_connected : Icons.bluetooth_disabled, color: c.connected ? Colors.teal : Colors.grey),
             const SizedBox(width: 8), Expanded(child: Text(l.t(c.status))),
