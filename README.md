@@ -57,3 +57,7 @@ GitHub Actions checks tests/lint, the merged APK permissions, signing, and fresh
 See [protocol](docs/PROTOCOL.md), [hardware checklist](docs/HARDWARE-TEST.md), [decisions](docs/DECISIONS.md), [roadmap](ROADMAP.md), [changelog](CHANGELOG.md) and [credits](THIRD_PARTY_NOTICES.md). Windows v1.0.1 is read-only and unchanged. Original MIT developer Tyler C's license and bundled font BSD license are retained in source, distribution and app licenses.
 
 The earlier [v0.0.1 installation investigation](docs/INSTALLATION-AUDIT-v0.0.1.md) is historical: the owner now confirms successful installation, but the original generic refusal's cause was never established.
+
+## Separat iOS BLE-test
+
+En isoleret [iOS-prototype](ios-prototype/README.md) undersøger iPhone BLE og Windows-sideloading. Den ændrer ikke Androids SPP-kode eller version. Fysisk iOS-installation, BLE og udskrivning er endnu ikke bekræftet.
