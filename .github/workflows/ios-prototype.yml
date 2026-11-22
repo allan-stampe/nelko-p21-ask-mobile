@@ -1,0 +1,93 @@
+name: iOS BLE prototype (unsigned IPA)
+on:
+  push:
+    branches: ['**']
+    tags: ['ios-v*']
+    paths: ['ios-prototype/**', '.github/workflows/ios-prototype.yml', 'lib/core/protocol.dart', 'lib/core/log.dart']
+  pull_request:
+    paths: ['ios-prototype/**', '.github/workflows/ios-prototype.yml', 'lib/core/protocol.dart', 'lib/core/log.dart']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ios-prototype-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  FLUTTER_SUPPRESS_ANALYTICS: 'true'
+  DART_SUPPRESS_ANALYTICS: 'true'
+  DEVELOPER_DIR: /Applications/Xcode_26.2.app/Contents/Developer
+jobs:
+  verify-build:
+    runs-on: macos-26
+    timeout-minutes: 40
+    defaults:
+      run:
+        working-directory: ios-prototype
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.5'
+          channel: stable
+          cache: true
+      - name: Prepare isolated iOS scaffold
+        run: |
+          flutter config --no-analytics
+          xcodebuild -version
+          tool/bootstrap_ios.sh
+      - name: Analyze and test Dart
+        run: |
+          flutter analyze --fatal-infos
+          flutter test
+      - name: Test independently implemented BLE flow control
+        run: |
+          swiftc native/BLEFlow.swift swift-tests/main.swift -o work/ble-flow-tests
+          work/ble-flow-tests
+      - name: Compile and launch iPhone simulator app
+        run: |
+          flutter build ios --simulator --debug --no-pub
+          tool/simulator.sh
+      - name: Build unsigned arm64 device app and verify IPA
+        run: |
+          flutter build ios --release --no-codesign --no-pub
+          python3 tool/package.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ios-prototype-diagnostics
+          path: |
+            ios-prototype/out/simulator
+            ios-prototype/pubspec.lock
+          if-no-files-found: ignore
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NELKO-P21-ASK-iOS-BLE-Test-v0.0.1-unsigned
+          path: ios-prototype/out/*.*
+          if-no-files-found: error
+  release:
+    needs: verify-build
+    if: startsWith(github.ref, 'refs/tags/ios-v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: NELKO-P21-ASK-iOS-BLE-Test-v0.0.1-unsigned
+          path: dist
+      - uses: softprops/action-gh-release@v2
+        with:
+          name: ASK iOS BLE Test 0.0.1 — unsigned hardware-test prototype
+          body_path: ios-prototype/RELEASE.md
+          prerelease: true
+          make_latest: false
+          fail_on_unmatched_files: true
+          files: |
+            dist/*.ipa
+            dist/SHA256SUMS.txt
+            dist/IOS-README.md
+            dist/IOS-PROTOCOL.md
+            dist/LICENSE
+            dist/Windows-MIT.txt
+            dist/THIRD_PARTY_NOTICES.md
