@@ -22,6 +22,6 @@ with zipfile.ZipFile(ipa) as z:
     assert z.testzip() is None
     assert 'Payload/Runner.app/Info.plist' in z.namelist()
 (out/'SHA256SUMS.txt').write_text(hashlib.sha256(ipa.read_bytes()).hexdigest()+'  '+ipa.name+'\n')
-for src,name in [('README.md','IOS-README.md'),('PROTOCOL.md','IOS-PROTOCOL.md'),('../LICENSE','LICENSE'),('../assets/licenses/Windows-MIT.txt','Windows-MIT.txt'),('../THIRD_PARTY_NOTICES.md','THIRD_PARTY_NOTICES.md')]:
+for src,name in [('README.md','IOS-README.md'),('PROTOCOL.md','IOS-PROTOCOL.md'),('../LICENSE','LICENSE'),('../assets/licenses/Windows-MIT.txt','Windows-MIT.txt'),('../THIRD_PARTY_NOTICES.md','THIRD_PARTY_NOTICES.md'),('../assets/licenses/Go-Fonts.txt','GO-FONTS-LICENSE.txt')]:
     shutil.copyfile(src,out/name)
 print('Verified device arm64 IPA; intentionally unsigned. Install only after local Apple signing.')

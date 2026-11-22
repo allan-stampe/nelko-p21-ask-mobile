@@ -34,6 +34,13 @@ jobs:
         run: |
           flutter config --no-analytics
           xcodebuild -version
+          python3 - <<'PYCODE'
+          import os
+          from pathlib import Path
+          assert 'version: 0.0.1+1' in Path('pubspec.yaml').read_text()
+          if os.environ['GITHUB_REF_TYPE']=='tag':
+              assert os.environ['GITHUB_REF_NAME']=='ios-v0.0.1'
+          PYCODE
           tool/bootstrap_ios.sh
       - name: Analyze and test Dart
         run: |
@@ -44,11 +51,8 @@ jobs:
         run: |
           swiftc native/BLEFlow.swift swift-tests/main.swift -o work/ble-flow-tests
           work/ble-flow-tests
-      - name: Compile and launch iPhone simulator app
-        run: |
-          flutter build ios --simulator --debug --no-pub
-          tool/simulator.sh
       - name: Build unsigned arm64 device app and verify IPA
+        timeout-minutes: 15
         run: |
           flutter build ios --release --no-codesign --no-pub
           python3 tool/package.py
@@ -67,8 +71,37 @@ jobs:
           name: NELKO-P21-ASK-iOS-BLE-Test-v0.0.1-unsigned
           path: ios-prototype/out/*.*
           if-no-files-found: error
+  simulator:
+    runs-on: macos-26
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: ios-prototype
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.5'
+          channel: stable
+          cache: true
+      - name: Prepare isolated iOS scaffold
+        run: |
+          flutter config --no-analytics
+          tool/bootstrap_ios.sh
+      - name: Compile iPhone simulator app
+        timeout-minutes: 12
+        run: flutter build ios --simulator --debug --no-pub
+      - name: Install and launch iPhone simulator app
+        timeout-minutes: 8
+        run: tool/simulator.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ios-simulator-smoke
+          path: ios-prototype/out/simulator
+          if-no-files-found: ignore
   release:
-    needs: verify-build
+    needs: [verify-build, simulator]
     if: startsWith(github.ref, 'refs/tags/ios-v')
     runs-on: ubuntu-latest
     permissions:
@@ -94,3 +127,4 @@ jobs:
             dist/LICENSE
             dist/Windows-MIT.txt
             dist/THIRD_PARTY_NOTICES.md
+            dist/GO-FONTS-LICENSE.txt

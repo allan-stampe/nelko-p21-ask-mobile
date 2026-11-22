@@ -26,7 +26,7 @@ The Go-generated golden fixture `test/fixtures/windows_reference.bin` tests the 
 
 Android v0.0.1 implements Bluetooth Classic RFCOMM via the standard Serial Port Profile UUID `00001101-0000-1000-8000-00805f9b34fb`. SDP/OS selects the channel; upstream describes channel 1. Cached advertised UUIDs are shown for diagnostics and can be empty. A vendor AF30 EIR UUID is an upstream observation, not a substitute SPP connection UUID.
 
-Upstream reports BLE service `0000ff00-0000-1000-8000-00805f9b34fb`, FF02 write-without-response and FF01 notification characteristics; FF04 alternate write, FF03 credits, FF05 indications and FF10 read/write are also described. These UUIDs use the same Bluetooth base suffix. Upstream reports BLE visibility depends on no Classic link being active, and describes MTU/pacing/credit constraints. These are research observations, not verified characteristics of the owner's printer. **BLE is not implemented here.**
+Upstream reports BLE service `0000ff00-0000-1000-8000-00805f9b34fb`, FF02 write-without-response and FF01 notification characteristics; FF04 alternate write, FF03 credits, FF05 indications and FF10 read/write are also described. These UUIDs use the same Bluetooth base suffix. Upstream reports BLE visibility depends on no Classic link being active, and describes MTU/pacing/credit constraints. These are research observations, not verified characteristics of the owner's printer. **The Android app does not implement BLE.** The separate [iOS prototype](../ios-prototype/PROTOCOL.md) now implements a candidate CoreBluetooth transport; physical iPhone BLE/printing remain unconfirmed.
 
 ## Battery and receive data
 
