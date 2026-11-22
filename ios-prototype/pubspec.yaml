@@ -1,0 +1,18 @@
+name: ask_p21_ios_test
+description: Experimental offline NELKO P21 BLE hardware-test app for iPhone.
+publish_to: none
+version: 0.0.1+1
+environment:
+  sdk: '>=3.10.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  nelko_p21_ask_mobile:
+    path: ..
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/licenses/

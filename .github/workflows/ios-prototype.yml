@@ -1,0 +1,130 @@
+name: iOS BLE prototype (unsigned IPA)
+on:
+  push:
+    branches: ['**']
+    tags: ['ios-v*']
+    paths: ['ios-prototype/**', '.github/workflows/ios-prototype.yml', 'lib/core/protocol.dart', 'lib/core/log.dart']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ios-prototype-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  FLUTTER_SUPPRESS_ANALYTICS: 'true'
+  DART_SUPPRESS_ANALYTICS: 'true'
+  DEVELOPER_DIR: /Applications/Xcode_26.2.app/Contents/Developer
+jobs:
+  verify-build:
+    runs-on: macos-26
+    timeout-minutes: 40
+    defaults:
+      run:
+        working-directory: ios-prototype
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.5'
+          channel: stable
+          cache: true
+      - name: Prepare isolated iOS scaffold
+        run: |
+          flutter config --no-analytics
+          xcodebuild -version
+          python3 - <<'PYCODE'
+          import os
+          from pathlib import Path
+          assert 'version: 0.0.1+1' in Path('pubspec.yaml').read_text()
+          if os.environ['GITHUB_REF_TYPE']=='tag':
+              assert os.environ['GITHUB_REF_NAME']=='ios-v0.0.1'
+          PYCODE
+          tool/bootstrap_ios.sh
+      - name: Analyze and test Dart
+        run: |
+          dart format --output=none --set-exit-if-changed lib test
+          flutter analyze --fatal-infos
+          flutter test
+      - name: Test independently implemented BLE flow control
+        run: |
+          swiftc native/BLEFlow.swift swift-tests/main.swift -o work/ble-flow-tests
+          work/ble-flow-tests
+      - name: Build unsigned arm64 device app and verify IPA
+        timeout-minutes: 15
+        run: |
+          flutter build ios --release --no-codesign --no-pub
+          python3 tool/package.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ios-prototype-diagnostics
+          path: |
+            ios-prototype/out/simulator
+            ios-prototype/pubspec.lock
+            ios-prototype/lib
+            ios-prototype/test
+          if-no-files-found: ignore
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NELKO-P21-ASK-iOS-BLE-Test-v0.0.1-unsigned
+          path: |
+            ios-prototype/out/*.*
+            ios-prototype/out/LICENSE
+          if-no-files-found: error
+  simulator:
+    runs-on: macos-26
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: ios-prototype
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.5'
+          channel: stable
+          cache: true
+      - name: Prepare isolated iOS scaffold
+        run: |
+          flutter config --no-analytics
+          tool/bootstrap_ios.sh
+      - name: Compile iPhone simulator app
+        timeout-minutes: 12
+        run: flutter build ios --simulator --debug --no-pub
+      - name: Install and launch iPhone simulator app
+        timeout-minutes: 15
+        run: tool/simulator.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ios-simulator-smoke
+          path: ios-prototype/out/simulator
+          if-no-files-found: ignore
+  release:
+    needs: [verify-build, simulator]
+    if: startsWith(github.ref, 'refs/tags/ios-v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: NELKO-P21-ASK-iOS-BLE-Test-v0.0.1-unsigned
+          path: dist
+      - uses: softprops/action-gh-release@v2
+        with:
+          name: ASK iOS BLE Test 0.0.1 — unsigned hardware-test prototype
+          body_path: ios-prototype/RELEASE.md
+          prerelease: true
+          make_latest: false
+          fail_on_unmatched_files: true
+          files: |
+            dist/*.ipa
+            dist/SHA256SUMS.txt
+            dist/IOS-README.md
+            dist/IOS-PROTOCOL.md
+            dist/LICENSE
+            dist/Windows-MIT.txt
+            dist/THIRD_PARTY_NOTICES.md
+            dist/GO-FONTS-LICENSE.txt

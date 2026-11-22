@@ -1,0 +1,78 @@
+# One-time publication recovery: immutable ios-v0.0.1 app/tests remain unchanged.
+# The initial upload glob omitted extensionless LICENSE from the sidecar artifact.
+name: Publish verified iOS 0.0.1 artifact
+on:
+  push:
+    branches: ['ios/ble-sideload-prototype']
+    paths: ['.github/workflows/ios-publish-recovery.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ios-v0.0.1
+      - name: Require the original device and simulator checks
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api repos/allan-stampe/nelko-p21-ask-mobile/actions/runs/45053793409 > run.json
+          gh api repos/allan-stampe/nelko-p21-ask-mobile/actions/runs/45053793409/jobs > jobs.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('run.json'))
+          assert r['head_sha']=='c61ff1e785960e60adf301df715c451cafefaca0'
+          assert r['head_branch']=='ios-v0.0.1'
+          jobs={j['name']:j['conclusion'] for j in json.load(open('jobs.json'))['jobs']}
+          assert jobs['verify-build']=='success' and jobs['simulator']=='success', jobs
+          PY
+      - uses: actions/download-artifact@v4
+        with:
+          name: NELKO-P21-ASK-iOS-BLE-Test-v0.0.1-unsigned
+          path: dist
+          run-id: 45053793409
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Restore missing sidecar and verify immutable IPA
+        run: |
+          cp LICENSE dist/LICENSE
+          cd dist
+          sha256sum --check SHA256SUMS.txt
+          cd ..
+          python3 - <<'PY'
+          import zipfile,plistlib
+          from pathlib import Path
+          ipa=Path('dist/NELKO-P21-ASK-iOS-BLE-Test-v0.0.1-unsigned.ipa')
+          with zipfile.ZipFile(ipa) as z:
+              assert z.testzip() is None
+              info=plistlib.loads(z.read('Payload/Runner.app/Info.plist'))
+              assert info['CFBundleIdentifier']=='dk.ask.nelkop21.ios'
+              assert info['CFBundleShortVersionString']=='0.0.1'
+              assert info['CFBundleSupportedPlatforms']==['iPhoneOS']
+              assert info['MinimumOSVersion']=='15.0'
+              for name in ['ASK-MIT.txt','Windows-MIT.txt','Go-Fonts.txt']:
+                  assert z.read('Payload/Runner.app/Frameworks/App.framework/flutter_assets/assets/licenses/'+name)==Path('ios-prototype/assets/licenses',name).read_bytes()
+          PY
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ios-v0.0.1
+          target_commitish: c61ff1e785960e60adf301df715c451cafefaca0
+          name: ASK iOS BLE Test 0.0.1 — unsigned hardware-test prototype
+          body_path: ios-prototype/RELEASE.md
+          prerelease: true
+          make_latest: false
+          fail_on_unmatched_files: true
+          files: |
+            dist/*.ipa
+            dist/SHA256SUMS.txt
+            dist/IOS-README.md
+            dist/IOS-PROTOCOL.md
+            dist/LICENSE
+            dist/Windows-MIT.txt
+            dist/THIRD_PARTY_NOTICES.md
+            dist/GO-FONTS-LICENSE.txt

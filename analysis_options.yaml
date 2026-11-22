@@ -1,6 +1,7 @@
 analyzer:
   exclude:
     - work/**
+    - ios-prototype/**
 linter:
   rules:
     avoid_print: true
