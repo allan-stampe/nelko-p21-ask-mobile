@@ -37,6 +37,7 @@ jobs:
           tool/bootstrap_ios.sh
       - name: Analyze and test Dart
         run: |
+          dart format lib test
           flutter analyze --fatal-infos
           flutter test
       - name: Test independently implemented BLE flow control
@@ -58,6 +59,8 @@ jobs:
           path: |
             ios-prototype/out/simulator
             ios-prototype/pubspec.lock
+            ios-prototype/lib
+            ios-prototype/test
           if-no-files-found: ignore
       - uses: actions/upload-artifact@v4
         with:

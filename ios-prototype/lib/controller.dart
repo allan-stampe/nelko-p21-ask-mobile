@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data' show BytesBuilder;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:nelko_p21_ask_mobile/core/log.dart';
