@@ -67,7 +67,9 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: NELKO-P21-ASK-iOS-BLE-Test-v0.0.1-unsigned
-          path: ios-prototype/out/*.*
+          path: |
+            ios-prototype/out/*.*
+            ios-prototype/out/LICENSE
           if-no-files-found: error
   simulator:
     runs-on: macos-26
