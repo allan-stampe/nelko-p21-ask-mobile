@@ -1,5 +1,12 @@
 # iOS prototype changelog
 
+## ios-v0.0.2 — 2026-11-24
+
+- Owner confirmed physical iPhone installation/launch; exported log confirms BLE connection and battery response (`BATTERY 99 00` in BCD framing).
+- Fix deterministic seven-packet print stall: FF03 reports no longer gate paced FF02 writes or initial readiness. Retain 20-byte cap, >=12ms spacing, CoreBluetooth backpressure, serialized transactions, timeout and no replay.
+- Add Swift regression replay of actual FF03 setup without replenishment through the entire Windows golden job and final PRINT; retain Apple-backpressure checks.
+- Same reference printer bytes and Android/Windows printer code. Printing on physical iPhone remains unconfirmed pending owner test.
+
 ## ios-v0.0.1 — 2026-11-22
 
 - Separate Flutter/CoreBluetooth BLE hardware-test prototype; Android remains v0.0.3.

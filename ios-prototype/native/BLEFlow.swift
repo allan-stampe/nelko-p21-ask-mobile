@@ -1,14 +1,17 @@
 import Foundation
 
 // Independently implemented from published wire-format facts; no upstream code copied.
+// FF03 reports are diagnostic observations, NOT permits for FF02 writes.
+// Hardware log 2026-11-24: no replenishment after the initial 01 07; gating
+// FF02 on that counter deadlocked both print jobs before bitmap/PRINT.
 struct BLEFlow {
-    private(set) var credits: Int? = nil
+    private(set) var reportedCredits: Int? = nil
     private(set) var payloadLimit = 20
-    mutating func reset() { credits = nil; payloadLimit = 20 }
+    mutating func reset() { reportedCredits = nil; payloadLimit = 20 }
     mutating func receive(_ data: Data) -> Bool {
         let b = Array(data)
         if b.count == 2 && b[0] == 1 {
-            credits = min(4096, (credits ?? 0) + Int(b[1]))
+            reportedCredits = min(4096, (reportedCredits ?? 0) + Int(b[1]))
             return true
         }
         if b.count == 3 && b[0] == 2 {
@@ -19,10 +22,8 @@ struct BLEFlow {
         }
         return false
     }
-    var maySend: Bool { credits == nil || credits! > 0 }
-    mutating func consume() -> Bool {
-        guard maySend else { return false }
-        if let n = credits { credits = n - 1 }
-        return true
+    func packetLength(remaining: Int, maximumWriteLength: Int, canSend: Bool) -> Int {
+        guard canSend, remaining > 0, maximumWriteLength > 0 else { return 0 }
+        return min(20, payloadLimit, maximumWriteLength, remaining)
     }
 }

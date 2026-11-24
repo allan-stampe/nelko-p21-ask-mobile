@@ -35,9 +35,9 @@ jobs:
           python3 - <<'PYCODE'
           import os
           from pathlib import Path
-          assert 'version: 0.0.1+1' in Path('pubspec.yaml').read_text()
+          assert 'version: 0.0.2+2' in Path('pubspec.yaml').read_text()
           if os.environ['GITHUB_REF_TYPE']=='tag':
-              assert os.environ['GITHUB_REF_NAME']=='ios-v0.0.1'
+              assert os.environ['GITHUB_REF_NAME']=='ios-v0.0.2'
           PYCODE
           tool/bootstrap_ios.sh
       - name: Analyze and test Dart
@@ -66,7 +66,7 @@ jobs:
           if-no-files-found: ignore
       - uses: actions/upload-artifact@v4
         with:
-          name: NELKO-P21-ASK-iOS-BLE-Test-v0.0.1-unsigned
+          name: NELKO-P21-ASK-iOS-BLE-Test-v0.0.2-unsigned
           path: |
             ios-prototype/out/*.*
             ios-prototype/out/LICENSE
@@ -110,11 +110,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: NELKO-P21-ASK-iOS-BLE-Test-v0.0.1-unsigned
+          name: NELKO-P21-ASK-iOS-BLE-Test-v0.0.2-unsigned
           path: dist
       - uses: softprops/action-gh-release@v2
         with:
-          name: ASK iOS BLE Test 0.0.1 — unsigned hardware-test prototype
+          name: ASK iOS BLE Test 0.0.2 — unsigned hardware-test prototype
           body_path: ios-prototype/RELEASE.md
           prerelease: true
           make_latest: false

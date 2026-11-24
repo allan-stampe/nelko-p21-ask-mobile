@@ -60,7 +60,7 @@ class IOSController extends ChangeNotifier {
       },
     );
     note(
-      'ASK iOS BLE Test 0.0.1; FF00/FF02/FF01 candidate profile. iOS installation, BLE and printing NOT physically confirmed.',
+      'ASK iOS BLE Test 0.0.2; FF00/FF02/FF01 candidate profile. iPhone installation and bidirectional BLE confirmed; printing NOT confirmed.',
     );
   }
 
@@ -258,8 +258,8 @@ class IOSController extends ChangeNotifier {
     );
   });
   String exportText() =>
-      'NELKO P21 – ASK iOS BLE Test 0.0.1\n'
-      'Physical iOS installation/BLE/printing NOT CONFIRMED. UTC timestamps.\n'
+      'NELKO P21 – ASK iOS BLE Test 0.0.2\n'
+      'Physical iPhone install/BLE confirmed; printing NOT CONFIRMED. UTC.\n'
       'TX = packet accepted by CoreBluetooth, not a printer acknowledgement.\n'
       'FF03/FF05 RX are logged as binary, not battery replies. Identifiers/data may be sensitive.\n'
       'Discarded older records: ${log.discarded}\n\n${log.entries.map((e) => e.text).join('\n')}';

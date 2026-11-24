@@ -90,7 +90,7 @@ final class AskBLE: NSObject, FlutterStreamHandler, CBCentralManagerDelegate, CB
             guard !closing.contains(id) else { error(result,"disconnect_pending","Previous BLE disconnect is pending; retry shortly");return }
             central?.stopScan();scanTimer?.invalidate();epoch+=1
             peripheral=p;p.delegate=self;ready=false;flow.reset();tx=nil;notifications.removeAll();opening=result
-            connectionTimer=Timer.scheduledTimer(withTimeInterval:20,repeats:false) { [weak self] _ in self?.close("BLE service/notification/credit setup timed out") }
+            connectionTimer=Timer.scheduledTimer(withTimeInterval:20,repeats:false) { [weak self] _ in self?.close("BLE service/notification setup timed out") }
             note("Connecting \(idText); FF00 / FF02 write / FF01 notify; iOS BLE NOT hardware-confirmed")
             central?.connect(p,options:nil)
         case "disconnect":close("Manual disconnect");result(nil)
@@ -135,21 +135,20 @@ final class AskBLE: NSObject, FlutterStreamHandler, CBCentralManagerDelegate, CB
     private func checkReady() {
         guard !ready,tx != nil,notifications[response]?.isNotifying == true else { return }
         guard notifications.values.allSatisfy({ $0.isNotifying }) else { return }
-        if notifications[flowID] != nil && flow.credits == nil { return }
         ready=true;connectionTimer?.invalidate();connectionTimer=nil
-        note("BLE profile ready; 20-byte cap / >=12ms spacing; \(notifications[flowID] == nil ? "paced-only (no FF03)" : "FF03 credits enabled"); NOT proof of printing")
+        note("BLE profile ready; FF02 paced <=20 bytes / >=12ms; CoreBluetooth backpressure; FF03 diagnostic only; NOT proof of printing")
         let result=opening;opening=nil;result?(nil)
     }
     private func pump() {
         guard writeResult != nil,active,ready,let p=peripheral,let c=tx else { return }
-        guard p.canSendWriteWithoutResponse,flow.maySend else { return }
+        guard p.canSendWriteWithoutResponse else { return }
         let now=ProcessInfo.processInfo.systemUptime
         if now<nextWriteAt {
             if writeTimer == nil { writeTimer=Timer.scheduledTimer(withTimeInterval:nextWriteAt-now,repeats:false) { [weak self] _ in self?.writeTimer=nil;self?.pump() } }
             return
         }
-        let size=min(20,flow.payloadLimit,p.maximumWriteValueLength(for:.withoutResponse),writeBytes.count-writeOffset)
-        guard size>0,flow.consume() else { close("Invalid BLE packet capacity");return }
+        let size=flow.packetLength(remaining:writeBytes.count-writeOffset,maximumWriteLength:p.maximumWriteValueLength(for:.withoutResponse),canSend:p.canSendWriteWithoutResponse)
+        guard size>0 else { return }
         let packet=writeBytes.subdata(in:writeOffset..<writeOffset+size)
         p.writeValue(packet,for:c,type:.withoutResponse)
         writeOffset+=size;nextWriteAt=now+0.012
