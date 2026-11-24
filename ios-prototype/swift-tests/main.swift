@@ -28,7 +28,8 @@ while offset<job.count {
 check(packets>7 && emitted==job, "Deliver complete Windows reference byte-exactly, not just seven packets")
 check(emitted.suffix(9)==Data("PRINT 1\r\n".utf8), "Reach PRINT after all bitmap bytes")
 check(flow.reportedCredits==7, "Preserve observed credit value; do not fabricate/decrement permits")
-check(flow.receive(Data([1,0])) && flow.packetLength(remaining:20,maximumWriteLength:127,canSend:true)==20, "Even zero reported FF03 credits cannot deadlock paced FF02")
+var zero = BLEFlow()
+check(zero.receive(Data([1,0])) && zero.reportedCredits==0 && zero.packetLength(remaining:20,maximumWriteLength:127,canSend:true)==20, "Zero reported FF03 credits cannot deadlock paced FF02")
 check(flow.receive(Data([2,8,0])) && flow.packetLength(remaining:20,maximumWriteLength:127,canSend:true)==8, "Honor smaller reported payload")
 for _ in 0..<100 { _ = flow.receive(Data([1,255])) }
 check(flow.reportedCredits==4096, "Bound diagnostic counter")
