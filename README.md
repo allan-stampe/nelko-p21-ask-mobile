@@ -60,4 +60,4 @@ The earlier [v0.0.1 installation investigation](docs/INSTALLATION-AUDIT-v0.0.1.m
 
 ## Separat iOS BLE-test
 
-En isoleret [iOS-prototype](ios-prototype/README.md) undersøger iPhone BLE og Windows-sideloading. Den ændrer ikke Androids SPP-kode eller version. Fysisk iOS-installation, BLE og udskrivning er endnu ikke bekræftet.
+En isoleret [iOS-prototype](ios-prototype/README.md) undersøger iPhone BLE og Windows-sideloading. Den ændrer ikke Androids SPP-kode eller version. Fysisk installation/opstart på iPhone og BLE med batterisvar er nu bekræftet (2026-11-24). Udskrivning er endnu ikke bekræftet; [hardwareanalysen](ios-prototype/HARDWARE-2026-11-24.md) dokumenterer syv-pakke-blokeringen og rettelsen i iOS 0.0.2.

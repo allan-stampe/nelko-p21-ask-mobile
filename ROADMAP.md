@@ -17,6 +17,6 @@ The owner confirmed v0.0.1 installed on Samsung Galaxy S22, SPP connection works
 
 ## iOS feasibility — experimental prototype
 
-An isolated [iOS BLE prototype](ios-prototype/README.md) is available for initial installation and hardware tests. No physical iPhone installation, BLE or printing is confirmed. Investigate CoreBluetooth BLE on physical hardware. Android Classic SPP cannot simply be ported to ordinary iOS applications; do not promise compatibility. Keep platform transport separate from shared Dart protocol/UI code.
+An isolated [iOS BLE prototype](ios-prototype/README.md) is available for initial installation and hardware tests. Owner confirmed physical iPhone installation/launch; the 2026-11-24 log confirms BLE and a battery reply. Printing remains unconfirmed; iOS 0.0.2 fixes an observed seven-packet software stall. Investigate CoreBluetooth BLE on physical hardware. Android Classic SPP cannot simply be ported to ordinary iOS applications; do not promise compatibility. Keep platform transport separate from shared Dart protocol/UI code.
 
 This mobile repository remains separate from Windows. All future development keeps local Bluetooth, offline operation, local data, open source, no account, no cloud, no subscription, no ads and no telemetry.

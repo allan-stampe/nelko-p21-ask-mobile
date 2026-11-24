@@ -1,13 +1,13 @@
-# NELKO P21 — ASK iOS BLE Test 0.0.1
+# NELKO P21 — ASK iOS BLE Test 0.0.2
 
-**Experimental, separate iPhone hardware-test prototype. Installation, BLE communication and physical printing on the owner's iPhone 11 Pro / reported iOS 27.2.1 are NOT confirmed.** Android remains version 0.0.3; the Windows project is untouched. This is not an App Store or TestFlight release.
+**Experimental iPhone print-test prototype. Physical installation, launch, BLE connection and a battery reply are confirmed on the owner's iPhone 11 Pro / reported iOS 27.2.1 (2026-11-24). Printing remains NOT confirmed.** Android remains version 0.0.3; the Windows project is untouched. This is not an App Store or TestFlight release.
 
 Your printer. Your labels. Your data.  
 No cloud. No account. Just print.
 
 ## Formål og status
 
-Denne første iOS-udgave undersøger, om P21's rapporterede BLE-profil kan bruges fra iPhone. iOS giver ikke almindelige apps adgang til Android-/Windows-forbindelsens generiske Bluetooth Classic SPP. En vellykket Android-test beviser derfor ikke, at iOS virker.
+Denne første iOS-udgave undersøger, om P21's rapporterede BLE-profil kan bruges fra iPhone. iOS giver ikke almindelige apps adgang til Android-/Windows-forbindelsens generiske Bluetooth Classic SPP. En vellykket Android-test beviser derfor ikke, at iOS virker. Ejeren har nu bekræftet installation/opstart; den eksporterede iPhone-log viser FF00/FF02/FF01-forbindelse og et batterisvar. Printforsøg i 0.0.1 stoppede efter syv pakker: se [hardwareanalysen](HARDWARE-2026-11-24.md). Version 0.0.2 retter denne lokale blokering; fysisk print skal stadig testes.
 
 Appen har dansk/engelsk brugerflade, BLE-søgning, valg/tilslutning, forbindelsesstatus, batteritest, Cancel Pause, ét referenceprint og lokal diagnoselog med UTC-tid, ASCII og HEX samt eksport. Ingen designer, automatisk genforbindelse, automatisk genudskrivning eller baggrundskommunikation i denne prototype. Udskrivning kræver et bevidst tryk. Loggen ligger i hukommelsen, slettes ved procesafslutning og begrænses til 500 poster/256 KiB; eksport bruger én midlertidig lokal fil.
 
@@ -15,7 +15,7 @@ Appen har dansk/engelsk brugerflade, BLE-søgning, valg/tilslutning, forbindelse
 
 IPA-filen er **usigneret**. Den kan ikke installeres ved blot at åbne den på telefonen. En lokal sideloading-app skal signere den med din egen Apple-konto. GitHub-buildet indeholder ingen Apple-konto, private nøgler eller provisioning profile.
 
-1. Hent IPA og `SHA256SUMS.txt` fra [iOS-testudgivelsen](https://github.com/allan-stampe/nelko-p21-ask-mobile/releases/tag/ios-v0.0.1). Kontrollér eventuelt filen i PowerShell med `Get-FileHash .\NELKO-P21-ASK-iOS-BLE-Test-v0.0.1-unsigned.ipa -Algorithm SHA256`.
+1. Hent IPA og `SHA256SUMS.txt` fra [iOS-testudgivelsen](https://github.com/allan-stampe/nelko-p21-ask-mobile/releases/tag/ios-v0.0.2). Kontrollér eventuelt filen i PowerShell med `Get-FileHash .\NELKO-P21-ASK-iOS-BLE-Test-v0.0.2-unsigned.ipa -Algorithm SHA256`.
 2. Hent **Sideloadly** fra [den officielle hjemmeside](https://sideloadly.io/). Følg sidens aktuelle Windows-krav til Apple iTunes og iCloud; brug de officielle Apple-downloads, som den henviser til. Ingen tredjeparts-IPA-sider er nødvendige.
 3. Tilslut iPhone med USB. Lås telefonen op, og godkend “Stol på denne computer”, hvis den spørger. Kontrollér, at Windows/Apple-driverne og Sideloadly ser telefonen.
 4. Vælg telefonen i Sideloadly, træk IPA-filen ind, og indtast din Apple-konto **lokalt i Sideloadly**. Følg Apples godkendelse/2FA. Del aldrig adgangskode eller koder i chat, GitHub eller Actions. Brug almindelig signering; appen behøver ingen tweaks, JIT eller ekstra rettigheder.
@@ -31,7 +31,7 @@ Ifølge [Sideloadlys FAQ](https://sideloadly.io/faq) kan en gratis Apple-konto b
 1. Bekræft først, at appen installerer og åbner. Den benytter et standard Flutter-placeholderikon; endeligt iOS-ikon er ikke lavet.
 2. Luk Windows-/Android-app og PowerShell-forbindelser til printeren. Sluk/tænd P21. Ifølge publicerede BLE-observationer annoncerer den muligvis kun BLE, mens Classic SPP er afbrudt.
 3. Tryk **Giv Bluetooth-adgang**, godkend iOS-dialogen, og tryk **Søg BLE-enheder**. En søgning varer 10 sekunder. Listen er ufiltreret og kan vise andre enheder; vælg kun din egen printer. Enheds-id er iOS' UUID, ikke COM-port/MAC-adresse.
-4. Vælg printeren og tilslut. Profilen skal have FF00, FF02 writeWithoutResponse og FF01 notify. Manglende profil eller kreditopsætning giver fejl/timeout og logges; forsøg ikke vilkårlige andre UUID'er.
+4. Vælg printeren og tilslut. Profilen skal have FF00, FF02 writeWithoutResponse og FF01 notify. Manglende profil eller notifikationsopsætning giver fejl/timeout og logges; forsøg ikke vilkårlige andre UUID'er.
 5. Test batteri, så Cancel Pause. Ukendt batterisvar er ikke bevis på defekt printer; rå svardata er i loggen.
 6. Med en 14×40 mm etiket: tryk testprint **én gang**, vent på resultatet, og fotografér etiketten. “API complete” betyder kun, at CoreBluetooth accepterede data, ikke at printeren skrev dem ud. Ved fejl sendes intet automatisk igen.
 7. Eksportér loggen før appen lukkes. Gennemse id'er/indhold før deling. Notér telefon/OS, firmware hvis kendt, hvert trin og faktisk printresultat.

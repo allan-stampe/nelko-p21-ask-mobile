@@ -70,7 +70,7 @@ class _State extends State<IOSTestApp> with WidgetsBindingObserver {
       home: Scaffold(
         appBar: AppBar(
           title: const Text(
-            'ASK P21 iOS Test 0.0.1',
+            'ASK P21 iOS Test 0.0.2',
             style: TextStyle(fontSize: 17),
           ),
           actions: [
@@ -86,8 +86,8 @@ class _State extends State<IOSTestApp> with WidgetsBindingObserver {
             children: [
               Text(
                 t(
-                  'Eksperimentel BLE-test. Installation og udskrivning på iPhone er IKKE fysisk bekræftet.',
-                  'Experimental BLE test. iPhone installation and printing are NOT physically confirmed.',
+                  'Eksperimentel printtest. Installation og BLE er bekræftet på iPhone. Udskrivning er IKKE bekræftet.',
+                  'Experimental print test. iPhone installation and BLE confirmed. Printing is NOT confirmed.',
                 ),
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),

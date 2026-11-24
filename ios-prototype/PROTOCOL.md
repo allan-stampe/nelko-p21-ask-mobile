@@ -1,6 +1,6 @@
 # iOS BLE protocol and technical decisions
 
-**Candidate profile only; no iOS hardware confirmation.** Windows/Android success is specific to Classic SPP. iOS CoreBluetooth uses BLE GATT; generic SPP is not exposed to ordinary iOS apps.
+**2026-11-24 hardware evidence confirms iPhone installation, BLE FF00/FF02/FF01 and a battery response; physical printing is still unconfirmed.** Windows/Android success is specific to Classic SPP. iOS CoreBluetooth uses BLE GATT; generic SPP is not exposed to ordinary iOS apps.
 
 ## Sources and provenance
 
@@ -18,18 +18,20 @@ Short UUIDs expand using Bluetooth base `0000xxxx-0000-1000-8000-00805F9B34FB`.
 | FF00 | Service | Required after unfiltered BLE discovery |
 | FF02 | Commands, write without response | Required; never substitutes unrelated writable UUID |
 | FF01 | Printer replies, notify | Required and subscribed before ready |
-| FF03 | Flow-control notifications | Subscribe when present; require an initial valid credit frame before ready |
+| FF03 | Flow-control notifications | Subscribe when present; raw diagnostic reports, not FF02 send permits |
 | FF05 | Indications / status | Subscribe when notify/indicate is available; log raw bytes |
 | FF04 | Alternate command channel reported upstream | Not used |
 | FF10 | Other read/write channel reported upstream | Not used |
 
 Discovery logs all discovered service UUIDs and FF00 characteristic properties. BLE may be unavailable while Classic is connected. Device identity is an iOS peripheral UUID; no MAC/COM assumptions. No automatic pairing settings, reconnect, background mode or command replay.
 
-## Independently implemented flow control
+## Independently implemented paced FF02 transport (0.0.2)
 
-FF03 `01 NN` adds NN **packet** credits; `02 LL LL` advertises payload size (little endian). Reject malformed/unknown frames; preserve them in HEX log. No fabricated initial credits. If FF03 is present but never supplies credits, connection times out after 20 seconds. When FF03 is absent, use paced-only mode. This is a conservative research-based policy, not a validated firmware guarantee.
+The owner's 2026-11-24 iPhone log contains FF03 `01 07` and `02 7F 00`, but **no further credits** before either print stalls. In 0.0.1 the application decremented seven local permits for every FF02 packet, then blocked indefinitely until its 12-second timeout. Session one consumed one packet for battery and six for the beginning of the print; session two consumed seven print packets. Neither reached BITMAP or PRINT. This proves the local gate is wrong for this observed paced FF02 path; it does not establish the vendor's complete credit semantics.
 
-Writes are capped at the minimum of **20 bytes**, advertised payload, CoreBluetooth maximum and remaining bytes. At least **12 ms** separates write calls, including across command boundaries. CoreBluetooth readiness and FF03 credits must both permit each packet. Never interleave user transactions. A write has a 12-second timeout; disconnect/background/errors abort it without replay, since partial physical delivery is unknowable. Cancellation fences prevent old disconnect callbacks reviving or closing a new session. No acknowledgement is invented: TX means native API accepted a packet.
+In 0.0.2, FF03 stays subscribed/logged/parsed as diagnostic data; no credit count blocks FF02 or initial readiness. No new credits are invented. The independently authored packet planner is shared by the native pump and a regression test replaying the observed FF03 reports and the entire Windows golden stream past packet seven, without any replenishment. Published research explicitly reports paced 20-byte/~12ms printing without credit management; no AGPL implementation is copied.
+
+Writes remain capped at the minimum of **20 bytes**, reported payload cap, CoreBluetooth maximum and remaining bytes, with **>=12ms spacing** including command boundaries. CoreBluetooth `canSendWriteWithoutResponse` and its readiness callback remain authoritative backpressure. Transactions never interleave. A 12-second write timeout still aborts unknown partial delivery; background/disconnect/errors never replay a job. TX means native API acceptance, not a printer acknowledgement. Removing the observed software deadlock is not proof of successful printing: a new physical test is required.
 
 FF01 replies are accumulated in a bounded 4096-byte window for the battery command. FF03/FF05 data are logged separately and cannot be misread as battery. Existing shared battery parser expects ASCII `BATTERY ` + BCD percent + charging byte 0/1 + CRLF; unsupported replies remain unknown. Binary whitespace is not trimmed. Physical interpretation requires confirmation.
 
