@@ -58,6 +58,6 @@ See [protocol](docs/PROTOCOL.md), [hardware checklist](docs/HARDWARE-TEST.md), [
 
 The earlier [v0.0.1 installation investigation](docs/INSTALLATION-AUDIT-v0.0.1.md) is historical: the owner now confirms successful installation, but the original generic refusal's cause was never established.
 
-## Separat iOS BLE-test
+## NELKO P21 – ASK iOS Edition
 
-En isoleret [iOS-prototype](ios-prototype/README.md) undersøger iPhone BLE og Windows-sideloading. Den ændrer ikke Androids SPP-kode eller version. Fysisk installation/opstart på iPhone og BLE med batterisvar er nu bekræftet (2026-11-24). Udskrivning er endnu ikke bekræftet; [hardwareanalysen](ios-prototype/HARDWARE-2026-11-24.md) dokumenterer syv-pakke-blokeringen og rettelsen i iOS 0.0.2.
+Den separate [iOS-udgave](ios-prototype/README.md) understøtter lokal BLE-referenceudskrivning. Ejeren bekræftede fysisk print med 0.0.2 på iPhone 11 Pro / oplyst iOS 27.2.1 den 2026-11-24. Version 0.0.3 opdaterer navn og status; printerkoden er uændret. Egne etikettekster/designer på iOS er næste trin. [Hardwareanalysen](ios-prototype/HARDWARE-2026-11-24.md) dokumenterer resultatet uden private enheds-id'er. Androids SPP-kode og version er uændret.

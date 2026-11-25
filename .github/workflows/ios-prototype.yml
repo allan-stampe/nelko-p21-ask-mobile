@@ -1,4 +1,4 @@
-name: iOS BLE prototype (unsigned IPA)
+name: ASK iOS Edition (unsigned IPA)
 on:
   push:
     branches: ['**']
@@ -35,9 +35,9 @@ jobs:
           python3 - <<'PYCODE'
           import os
           from pathlib import Path
-          assert 'version: 0.0.2+2' in Path('pubspec.yaml').read_text()
+          assert 'version: 0.0.3+3' in Path('pubspec.yaml').read_text()
           if os.environ['GITHUB_REF_TYPE']=='tag':
-              assert os.environ['GITHUB_REF_NAME']=='ios-v0.0.2'
+              assert os.environ['GITHUB_REF_NAME']=='ios-v0.0.3'
           PYCODE
           tool/bootstrap_ios.sh
       - name: Analyze and test Dart
@@ -66,7 +66,7 @@ jobs:
           if-no-files-found: ignore
       - uses: actions/upload-artifact@v4
         with:
-          name: NELKO-P21-ASK-iOS-BLE-Test-v0.0.2-unsigned
+          name: NELKO-P21-ASK-iOS-Edition-v0.0.3-unsigned
           path: |
             ios-prototype/out/*.*
             ios-prototype/out/LICENSE
@@ -110,13 +110,13 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: NELKO-P21-ASK-iOS-BLE-Test-v0.0.2-unsigned
+          name: NELKO-P21-ASK-iOS-Edition-v0.0.3-unsigned
           path: dist
       - uses: softprops/action-gh-release@v2
         with:
-          name: ASK iOS BLE Test 0.0.2 — unsigned hardware-test prototype
+          name: NELKO P21 – ASK iOS Edition v0.0.3
           body_path: ios-prototype/RELEASE.md
-          prerelease: true
+          prerelease: false
           make_latest: false
           fail_on_unmatched_files: true
           files: |
@@ -128,3 +128,4 @@ jobs:
             dist/Windows-MIT.txt
             dist/THIRD_PARTY_NOTICES.md
             dist/GO-FONTS-LICENSE.txt
+            dist/HARDWARE-2026-11-24.md

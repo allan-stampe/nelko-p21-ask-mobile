@@ -60,7 +60,7 @@ class IOSController extends ChangeNotifier {
       },
     );
     note(
-      'ASK iOS BLE Test 0.0.2; FF00/FF02/FF01 candidate profile. iPhone installation and bidirectional BLE confirmed; printing NOT confirmed.',
+      'NELKO P21 – ASK iOS Edition 0.0.3; owner confirmed iPhone 11 Pro BLE reference print on 2026-11-24.',
     );
   }
 
@@ -169,7 +169,7 @@ class IOSController extends ChangeNotifier {
       await bridge.invoke<void>('connect', {'id': selected});
       if (token == _generation && !_disposed && foreground) {
         connected = true;
-        note('BLE profile ready; NOT proof of printing');
+        note('BLE profile ready; connection status only');
       }
     } catch (e) {
       if (token == _generation) {
@@ -215,7 +215,7 @@ class IOSController extends ChangeNotifier {
     try {
       await action(token);
       _active(token);
-      note('$label API complete; physical output NOT confirmed');
+      note('$label API complete; verify output on printer');
     } catch (e) {
       log.add('ERROR', note: '$label: $e; no replay');
       if (token == _generation) {
@@ -254,12 +254,12 @@ class IOSController extends ChangeNotifier {
     note(
       battery == null
           ? 'Unknown battery reply; inspect FF01 RX'
-          : 'BCD candidate: ${battery!.percent}%, charging=${battery!.charging}; not hardware-confirmed',
+          : 'Printer battery reply: ${battery!.percent}%, charging=${battery!.charging}',
     );
   });
   String exportText() =>
-      'NELKO P21 – ASK iOS BLE Test 0.0.2\n'
-      'Physical iPhone install/BLE confirmed; printing NOT CONFIRMED. UTC.\n'
+      'NELKO P21 – ASK iOS Edition 0.0.3\n'
+      'Owner confirmed iPhone 11 Pro reference print on 2026-11-24. UTC.\n'
       'TX = packet accepted by CoreBluetooth, not a printer acknowledgement.\n'
       'FF03/FF05 RX are logged as binary, not battery replies. Identifiers/data may be sensitive.\n'
       'Discarded older records: ${log.discarded}\n\n${log.entries.map((e) => e.text).join('\n')}';

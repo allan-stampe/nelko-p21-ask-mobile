@@ -1,32 +1,34 @@
-# NELKO P21 — ASK iOS BLE Test 0.0.2
+# NELKO P21 – ASK iOS Edition v0.0.3
 
-**Experimental iPhone print-test prototype. Physical installation, launch, BLE connection and a battery reply are confirmed on the owner's iPhone 11 Pro / reported iOS 27.2.1 (2026-11-24). Printing remains NOT confirmed.** Android remains version 0.0.3; the Windows project is untouched. This is not an App Store or TestFlight release.
+**Tidlig iOS-udgave med fysisk bekræftet referenceprint. Ejeren har bekræftet installation, opstart, BLE og en udskrevet etiket med 0.0.2 på iPhone 11 Pro / oplyst iOS 27.2.1 og NELKO P21 (2026-11-24). 0.0.3 bevarer printerkoden.** Android remains version 0.0.3; the Windows project is untouched. This is not an App Store or TestFlight release.
 
 Your printer. Your labels. Your data.  
 No cloud. No account. Just print.
 
 ## Formål og status
 
-Denne første iOS-udgave undersøger, om P21's rapporterede BLE-profil kan bruges fra iPhone. iOS giver ikke almindelige apps adgang til Android-/Windows-forbindelsens generiske Bluetooth Classic SPP. En vellykket Android-test beviser derfor ikke, at iOS virker. Ejeren har nu bekræftet installation/opstart; den eksporterede iPhone-log viser FF00/FF02/FF01-forbindelse og et batterisvar. Printforsøg i 0.0.1 stoppede efter syv pakker: se [hardwareanalysen](HARDWARE-2026-11-24.md). Version 0.0.2 retter denne lokale blokering; fysisk print skal stadig testes.
+Version 0.0.3 hedder **NELKO P21 – ASK iOS Edition**. Den forældede eksperimentelle advarsel og påstanden om ubekræftet print er rettet. [Hardwareanalysen](HARDWARE-2026-11-24.md) dokumenterer både syv-pakke-fejlen i 0.0.1 og det efterfølgende vellykkede print i 0.0.2: 181 TX-pakker / 3.513 bytes matcher hele Windows-referencejobbet, og ejeren bekræftede etiketten fysisk.
 
-Appen har dansk/engelsk brugerflade, BLE-søgning, valg/tilslutning, forbindelsesstatus, batteritest, Cancel Pause, ét referenceprint og lokal diagnoselog med UTC-tid, ASCII og HEX samt eksport. Ingen designer, automatisk genforbindelse, automatisk genudskrivning eller baggrundskommunikation i denne prototype. Udskrivning kræver et bevidst tryk. Loggen ligger i hukommelsen, slettes ved procesafslutning og begrænses til 500 poster/256 KiB; eksport bruger én midlertidig lokal fil.
+Dette er en tidlig udgave med referenceprint. Egne etikettekster og designer er endnu ikke implementeret. Bekræftelsen gælder den testede kombination, ikke alle iPhones og firmwarevarianter. iOS anvender lokal BLE via CoreBluetooth; Android-/Windows-koden bruger Classic SPP og er uændret.
+
+Appen har dansk/engelsk brugerflade, BLE-søgning, valg/tilslutning, forbindelsesstatus, batteritest, Cancel Pause, ét referenceprint og lokal diagnoselog med UTC-tid, ASCII og HEX samt eksport. Ingen designer, automatisk genforbindelse, automatisk genudskrivning eller baggrundskommunikation i denne udgave. Udskrivning kræver et bevidst tryk. Loggen ligger i hukommelsen, slettes ved procesafslutning og begrænses til 500 poster/256 KiB; eksport bruger én midlertidig lokal fil.
 
 ## Installation fra Windows uden betalt udviklermedlemskab
 
 IPA-filen er **usigneret**. Den kan ikke installeres ved blot at åbne den på telefonen. En lokal sideloading-app skal signere den med din egen Apple-konto. GitHub-buildet indeholder ingen Apple-konto, private nøgler eller provisioning profile.
 
-1. Hent IPA og `SHA256SUMS.txt` fra [iOS-testudgivelsen](https://github.com/allan-stampe/nelko-p21-ask-mobile/releases/tag/ios-v0.0.2). Kontrollér eventuelt filen i PowerShell med `Get-FileHash .\NELKO-P21-ASK-iOS-BLE-Test-v0.0.2-unsigned.ipa -Algorithm SHA256`.
+1. Hent IPA og `SHA256SUMS.txt` fra [iOS-udgivelsen](https://github.com/allan-stampe/nelko-p21-ask-mobile/releases/tag/ios-v0.0.3). Kontrollér eventuelt filen i PowerShell med `Get-FileHash .\NELKO-P21-ASK-iOS-Edition-v0.0.3-unsigned.ipa -Algorithm SHA256`.
 2. Hent **Sideloadly** fra [den officielle hjemmeside](https://sideloadly.io/). Følg sidens aktuelle Windows-krav til Apple iTunes og iCloud; brug de officielle Apple-downloads, som den henviser til. Ingen tredjeparts-IPA-sider er nødvendige.
 3. Tilslut iPhone med USB. Lås telefonen op, og godkend “Stol på denne computer”, hvis den spørger. Kontrollér, at Windows/Apple-driverne og Sideloadly ser telefonen.
 4. Vælg telefonen i Sideloadly, træk IPA-filen ind, og indtast din Apple-konto **lokalt i Sideloadly**. Følg Apples godkendelse/2FA. Del aldrig adgangskode eller koder i chat, GitHub eller Actions. Brug almindelig signering; appen behøver ingen tweaks, JIT eller ekstra rettigheder.
 5. Klik Start. Følg telefonens anvisninger om udviklertilstand og tillid til udviklerprofilen. På nyere iOS findes de normalt under **Indstillinger → Anonymitet & sikkerhed → Udviklertilstand** (kan kræve genstart) og **Generelt → VPN og administration af enhed**. Menunavne kan variere. Genåbn appen efter godkendelse.
 6. Hvis installationen fejler, gem den præcise fejl fra Sideloadly, uden personlige oplysninger. En kompileret IPA eller simulatorstart beviser ikke, at signering/installation virker på netop din telefon.
 
-Ifølge [Sideloadlys FAQ](https://sideloadly.io/faq) kan en gratis Apple-konto bruges til almindelige iPhone-apps; signeringen gælder normalt **7 dage**, og højst **3 sideloadede apps** kan være aktive. Appen skal derefter signeres/installeres igen. Leverandøren angiver understøttelse op til iOS 27+, men dette er **ikke vores fysiske test af iOS 27.2.1**. Et medlemskab til 99 USD/år er således ikke nødvendigt for at forsøge denne testvej.
+Ifølge [Sideloadlys FAQ](https://sideloadly.io/faq) kan en gratis Apple-konto bruges til almindelige iPhone-apps; signeringen gælder normalt **7 dage**, og højst **3 sideloadede apps** kan være aktive. Appen skal derefter signeres/installeres igen. Ejeren har gennemført denne installation på sin iPhone 11 Pro / oplyst iOS 27.2.1. Andre enheder/OS-versioner kan kræve separat afprøvning. Et medlemskab til 99 USD/år er således ikke nødvendigt for at forsøge denne testvej.
 
 **Offline-kravet gælder selve printerappen.** Installation, Apple-signering og fornyelse kræver Apple-konto og netadgang i installationsværktøjet. Læs værktøjets aktuelle privatlivsoplysninger; dette projekt driver ikke den eksterne autentifikation. Printerappen har ingen login, server, HTTP-klient, cloud, reklamer, abonnementer eller telemetri. Normal printerbrug er lokal. iOS har ikke Androids `INTERNET`-manifesttilladelse. Systemets deleark kan tilbyde cloud-destinationer: vælg **Gem i Arkiver → På min iPhone**, hvis eksporten skal forblive lokal.
 
-## Første fysiske test — stop ved fejl
+## Brug og afprøvning på andre enheder
 
 1. Bekræft først, at appen installerer og åbner. Den benytter et standard Flutter-placeholderikon; endeligt iOS-ikon er ikke lavet.
 2. Luk Windows-/Android-app og PowerShell-forbindelser til printeren. Sluk/tænd P21. Ifølge publicerede BLE-observationer annoncerer den muligvis kun BLE, mens Classic SPP er afbrudt.
@@ -36,7 +38,9 @@ Ifølge [Sideloadlys FAQ](https://sideloadly.io/faq) kan en gratis Apple-konto b
 6. Med en 14×40 mm etiket: tryk testprint **én gang**, vent på resultatet, og fotografér etiketten. “API complete” betyder kun, at CoreBluetooth accepterede data, ikke at printeren skrev dem ud. Ved fejl sendes intet automatisk igen.
 7. Eksportér loggen før appen lukkes. Gennemse id'er/indhold før deling. Notér telefon/OS, firmware hvis kendt, hvert trin og faktisk printresultat.
 
-Appen afbryder forbindelsen, hvis den går i baggrunden. Genoptagelse udskriver aldrig automatisk. Manuel genforbindelse kræves. Ved `disconnect_pending` afventes iOS' gamle afbrydelse; hvis tilstanden ikke slipper, luk/genåbn appen. Ikke fysisk afprøvede firmwarevarianter kan kræve en anden BLE-profil eller flowkontrol; prototypen gætter ikke videre.
+Appen afbryder forbindelsen, hvis den går i baggrunden. Genoptagelse udskriver aldrig automatisk. Manuel genforbindelse kræves. Ved `disconnect_pending` afventes iOS' gamle afbrydelse; hvis tilstanden ikke slipper, luk/genåbn appen. Ikke fysisk afprøvede firmwarevarianter kan kræve en anden BLE-profil eller flowkontrol; appen forsøger ikke andre protokoller automatisk.
+
+Opdatér den eksisterende app med samme Apple-konto og automatiske bundle-id-indstilling i Sideloadly. Bundle-id er fortsat `dk.ask.nelkop21.ios`; den gamle app behøver normalt ikke slettes. Kontrollér **v0.0.3** i appen efter opdateringen. Ikonet er uændret.
 
 ## Byg og test
 

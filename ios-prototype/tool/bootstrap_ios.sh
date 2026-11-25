@@ -29,7 +29,8 @@ import plistlib
 from pathlib import Path
 p=Path('ios/Runner/Info.plist')
 d=plistlib.loads(p.read_bytes())
-d['CFBundleDisplayName']='ASK P21 iOS Test'
+d['CFBundleDisplayName']='NELKO P21 – ASK iOS Edition'
+d['CFBundleName']='NELKO P21 – ASK iOS Edition'
 d['NSBluetoothAlwaysUsageDescription']='Find og test din NELKO P21 lokalt via Bluetooth. Find and test your NELKO P21 locally over Bluetooth.'
 d.pop('UIBackgroundModes',None)
 p.write_bytes(plistlib.dumps(d))
