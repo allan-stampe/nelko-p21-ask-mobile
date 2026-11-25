@@ -77,7 +77,7 @@ final class AskBLE: NSObject, FlutterStreamHandler, CBCentralManagerDelegate, CB
             central?.stopScan(); discovered.removeAll(); scanTimer?.invalidate()
             // Deliberately unfiltered: some revisions may not advertise FF00.
             central?.scanForPeripherals(withServices:nil,options:[CBCentralManagerScanOptionAllowDuplicatesKey:false])
-            note("BLE discovery, 10 seconds; FF00 is a candidate profile, not hardware proof")
+            note("BLE discovery, 10 seconds; looking for FF00 printer service")
             scanTimer=Timer.scheduledTimer(withTimeInterval:10,repeats:false) { [weak self] _ in self?.central?.stopScan();self?.emit(["type":"scanDone"]) }
             result(nil)
         case "stopScan":central?.stopScan();scanTimer?.invalidate();emit(["type":"scanDone"]);result(nil)
@@ -91,7 +91,7 @@ final class AskBLE: NSObject, FlutterStreamHandler, CBCentralManagerDelegate, CB
             central?.stopScan();scanTimer?.invalidate();epoch+=1
             peripheral=p;p.delegate=self;ready=false;flow.reset();tx=nil;notifications.removeAll();opening=result
             connectionTimer=Timer.scheduledTimer(withTimeInterval:20,repeats:false) { [weak self] _ in self?.close("BLE service/notification setup timed out") }
-            note("Connecting \(idText); FF00 / FF02 write / FF01 notify; iOS BLE NOT hardware-confirmed")
+            note("Connecting \(idText); FF00 / FF02 write / FF01 notify")
             central?.connect(p,options:nil)
         case "disconnect":close("Manual disconnect");result(nil)
         case "write":
@@ -183,7 +183,7 @@ final class AskBLE: NSObject, FlutterStreamHandler, CBCentralManagerDelegate, CB
         guard p === peripheral else { return }
         if let e=error { close("Service discovery: \(e.localizedDescription)");return }
         note("GATT services: \((p.services ?? []).map{$0.uuid.uuidString}.joined(separator:", "))")
-        guard let s=p.services?.first(where:{$0.uuid==service}) else { close("FF00 service not found; unsupported candidate profile");return }
+        guard let s=p.services?.first(where:{$0.uuid==service}) else { close("FF00 service not found; unsupported printer profile");return }
         p.discoverCharacteristics(nil,for:s)
     }
     func peripheral(_ p: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {

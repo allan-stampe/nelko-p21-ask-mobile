@@ -11,7 +11,7 @@ Version 0.0.3 hedder **NELKO P21 – ASK iOS Edition**. Den forældede eksperime
 
 Dette er en tidlig udgave med referenceprint. Egne etikettekster og designer er endnu ikke implementeret. Bekræftelsen gælder den testede kombination, ikke alle iPhones og firmwarevarianter. iOS anvender lokal BLE via CoreBluetooth; Android-/Windows-koden bruger Classic SPP og er uændret.
 
-Appen har dansk/engelsk brugerflade, BLE-søgning, valg/tilslutning, forbindelsesstatus, batteritest, Cancel Pause, ét referenceprint og lokal diagnoselog med UTC-tid, ASCII og HEX samt eksport. Ingen designer, automatisk genforbindelse, automatisk genudskrivning eller baggrundskommunikation i denne prototype. Udskrivning kræver et bevidst tryk. Loggen ligger i hukommelsen, slettes ved procesafslutning og begrænses til 500 poster/256 KiB; eksport bruger én midlertidig lokal fil.
+Appen har dansk/engelsk brugerflade, BLE-søgning, valg/tilslutning, forbindelsesstatus, batteritest, Cancel Pause, ét referenceprint og lokal diagnoselog med UTC-tid, ASCII og HEX samt eksport. Ingen designer, automatisk genforbindelse, automatisk genudskrivning eller baggrundskommunikation i denne udgave. Udskrivning kræver et bevidst tryk. Loggen ligger i hukommelsen, slettes ved procesafslutning og begrænses til 500 poster/256 KiB; eksport bruger én midlertidig lokal fil.
 
 ## Installation fra Windows uden betalt udviklermedlemskab
 
