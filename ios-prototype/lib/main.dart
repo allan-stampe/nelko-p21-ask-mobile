@@ -62,7 +62,7 @@ class _State extends State<IOSTestApp> with WidgetsBindingObserver {
     listenable: c,
     builder: (context, _) => MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'ASK P21 iOS Test',
+      title: 'NELKO P21 – ASK iOS Edition',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
         useMaterial3: true,
@@ -70,8 +70,8 @@ class _State extends State<IOSTestApp> with WidgetsBindingObserver {
       home: Scaffold(
         appBar: AppBar(
           title: const Text(
-            'ASK P21 iOS Test 0.0.2',
-            style: TextStyle(fontSize: 17),
+            'NELKO P21 – ASK iOS Edition\nv0.0.3',
+            style: TextStyle(fontSize: 14),
           ),
           actions: [
             TextButton(
@@ -86,8 +86,8 @@ class _State extends State<IOSTestApp> with WidgetsBindingObserver {
             children: [
               Text(
                 t(
-                  'Eksperimentel printtest. Installation og BLE er bekræftet på iPhone. Udskrivning er IKKE bekræftet.',
-                  'Experimental print test. iPhone installation and BLE confirmed. Printing is NOT confirmed.',
+                  'Tidlig udgave med referenceprint. Fysisk print er bekræftet på iPhone 11 Pro.',
+                  'Early edition with reference printing. Physical printing confirmed on iPhone 11 Pro.',
                 ),
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
@@ -96,8 +96,8 @@ class _State extends State<IOSTestApp> with WidgetsBindingObserver {
               Text(
                 c.connected
                     ? t(
-                        'BLE-profil klar — udskrift ubekræftet',
-                        'BLE profile ready — printing unconfirmed',
+                        'Bluetooth-printer forbundet',
+                        'Bluetooth printer connected',
                       )
                     : c.connecting
                     ? t(
@@ -173,8 +173,8 @@ class _State extends State<IOSTestApp> with WidgetsBindingObserver {
               const Divider(height: 24),
               Text(
                 t(
-                      'Batteri (ubekræftet BCD-fortolkning):',
-                      'Battery (unverified BCD interpretation):',
+                      'Batteri (printerens svar):',
+                      'Battery (printer reply):',
                     ) +
                     ' ${c.battery?.percent.toString() ?? '?'}%',
               ),

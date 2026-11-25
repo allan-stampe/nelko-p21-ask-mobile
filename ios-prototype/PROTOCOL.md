@@ -1,6 +1,6 @@
 # iOS BLE protocol and technical decisions
 
-**2026-11-24 hardware evidence confirms iPhone installation, BLE FF00/FF02/FF01 and a battery response; physical printing is still unconfirmed.** Windows/Android success is specific to Classic SPP. iOS CoreBluetooth uses BLE GATT; generic SPP is not exposed to ordinary iOS apps.
+**2026-11-24 hardware evidence confirms iPhone installation, BLE FF00/FF02/FF01 and a battery response; the owner also confirmed a physical reference print with 0.0.2. See the hardware evidence for the matching 181-packet / 3,513-byte logged job.** Windows/Android success is specific to Classic SPP. iOS CoreBluetooth uses BLE GATT; generic SPP is not exposed to ordinary iOS apps.
 
 ## Sources and provenance
 
@@ -31,7 +31,7 @@ The owner's 2026-11-24 iPhone log contains FF03 `01 07` and `02 7F 00`, but **no
 
 In 0.0.2, FF03 stays subscribed/logged/parsed as diagnostic data; no credit count blocks FF02 or initial readiness. No new credits are invented. The independently authored packet planner is shared by the native pump and a regression test replaying the observed FF03 reports and the entire Windows golden stream past packet seven, without any replenishment. Published research explicitly reports paced 20-byte/~12ms printing without credit management; no AGPL implementation is copied.
 
-Writes remain capped at the minimum of **20 bytes**, reported payload cap, CoreBluetooth maximum and remaining bytes, with **>=12ms spacing** including command boundaries. CoreBluetooth `canSendWriteWithoutResponse` and its readiness callback remain authoritative backpressure. Transactions never interleave. A 12-second write timeout still aborts unknown partial delivery; background/disconnect/errors never replay a job. TX means native API acceptance, not a printer acknowledgement. Removing the observed software deadlock is not proof of successful printing: a new physical test is required.
+Writes remain capped at the minimum of **20 bytes**, reported payload cap, CoreBluetooth maximum and remaining bytes, with **>=12ms spacing** including command boundaries. CoreBluetooth `canSendWriteWithoutResponse` and its readiness callback remain authoritative backpressure. Transactions never interleave. A 12-second write timeout still aborts unknown partial delivery; background/disconnect/errors never replay a job. TX means native API acceptance, not a printer acknowledgement. Removing the observed software deadlock is not proof of successful printing: the owner subsequently supplied a matching complete log and confirmed physical paper output; see [hardware evidence](HARDWARE-2026-11-24.md). 0.0.3 preserves this transport unchanged.
 
 FF01 replies are accumulated in a bounded 4096-byte window for the battery command. FF03/FF05 data are logged separately and cannot be misread as battery. Existing shared battery parser expects ASCII `BATTERY ` + BCD percent + charging byte 0/1 + CRLF; unsupported replies remain unknown. Binary whitespace is not trimmed. Physical interpretation requires confirmation.
 

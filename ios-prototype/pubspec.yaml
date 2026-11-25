@@ -1,7 +1,7 @@
 name: ask_p21_ios_test
-description: Experimental offline NELKO P21 BLE hardware-test app for iPhone.
+description: NELKO P21 ASK iOS Edition with offline BLE reference printing.
 publish_to: none
-version: 0.0.2+2
+version: 0.0.3+3
 environment:
   sdk: '>=3.10.0 <4.0.0'
 dependencies:
