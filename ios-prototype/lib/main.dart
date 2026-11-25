@@ -172,10 +172,7 @@ class _State extends State<IOSTestApp> with WidgetsBindingObserver {
               ),
               const Divider(height: 24),
               Text(
-                t(
-                      'Batteri (printerens svar):',
-                      'Battery (printer reply):',
-                    ) +
+                t('Batteri (printerens svar):', 'Battery (printer reply):') +
                     ' ${c.battery?.percent.toString() ?? '?'}%',
               ),
               Text(
